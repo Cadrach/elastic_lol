@@ -1,0 +1,9 @@
+{
+    "require": {
+        "elasticsearch/elasticsearch": "^5.3",
+        "guzzlehttp/guzzle": "^6.3",
+        "vlucas/phpdotenv": "^2.4",
+        "nesbot/carbon": "^1.25",
+        "tightenco/collect": "^5.4"
+    }
+}
