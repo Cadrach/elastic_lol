@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Elasticsearch\Common\Exceptions\Missing404Exception;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
 use hamburgscleanest\GuzzleAdvancedThrottle\Middleware\ThrottleMiddleware;
@@ -104,6 +105,9 @@ class CrawlerLaunch extends Command
             //Store this accountId as treated
             $treated[] = $accountId;
 
+            //Store currently created
+            $createdBefore = $this->created;
+
             //Store matches in elasticsearch
             $matches = $this->storeMatchesDetails($accountId);
 
@@ -113,7 +117,8 @@ class CrawlerLaunch extends Command
             //New accountId
             $accountId = $matches->pluck('participantIdentities')->map(function($v){return collect($v)->pluck('player')->pluck('accountId');})->flatten()->unique()->diff($treated)->random();
 
-            $this->line("<fg=red;bg=yellow>{$this->created} total matches created.</>");
+            $this->line("<fg=red;bg=yellow>".($this->created - $createdBefore)." created ({$this->created} total created)</>");
+            $this->line(' ');
         }
 
 
@@ -168,10 +173,14 @@ class CrawlerLaunch extends Command
                 //Extend time taken
 //                $timespent = (microtime(true) - $time);
                 sleep(2); // max 50 req/min
+            }catch(ServerException $e){
+                //Ignore this match
+                $this->error($e->getMessage());
+                sleep(60);
             }
 
             //Display progress
-            echo "\r" . ($k+1) . " /$total (" . round(($k+1)/$total*100, 2) . "%)                         ";
+            echo "\r" . ($k+1) . "/$total (" . round(($k+1)/$total*100, 2) . "%)                         ";
         }
 
         //New line feed to complete progress display
