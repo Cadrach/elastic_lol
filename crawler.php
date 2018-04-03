@@ -11,7 +11,7 @@ function getMatches(Client $client, $accountId){
     $beginIndex = 0;
     $matches = collect([]);
     $count = 0;
-    $season = getenv('SEASON_ID');
+    $season = getenv('LOL_SEASON_ID');
     while(++$count<100){ //max 10000 matches taken in account
         $result = toJson($client->get("match/v3/matchlists/by-account/$accountId?beginIndex=$beginIndex&season=$season"));
         $matches = $matches->merge($result['matches']);
@@ -39,13 +39,15 @@ $client = new Client([
     'timeout'  => 10.0,
     'verify' => false, //do not check certificates
     'headers' => [
-        'X-Riot-Token' => getenv('API_KEY'),
+        'X-Riot-Token' => getenv('LOL_API_KEY'),
     ]
 ]);
 
 echo '<pre>';
 
 $accountId = toJson($client->get('summoner/v3/summoners/by-name/' . $summoner))['accountId'];
+
+echo $accountId;die();
 
 $matches = getMatches($client, $accountId);
 
