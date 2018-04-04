@@ -2,16 +2,17 @@
 
 namespace App\Console\Commands;
 
+use App\Console\ThrottleException;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
-use hamburgscleanest\GuzzleAdvancedThrottle\Middleware\ThrottleMiddleware;
-use hamburgscleanest\GuzzleAdvancedThrottle\RequestLimitRuleset;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use App\Models\ElasticSearchClient;
+use Illuminate\Support\Collection;
 
 class CrawlerLaunch extends Command
 {
@@ -35,6 +36,15 @@ class CrawlerLaunch extends Command
     protected $client;
 
     /**
+     * @var array
+     */
+    protected $throttles = [
+        [20, 1],
+        [100, 125],
+//        [3, 10],
+    ];
+
+    /**
      * Created matches
      * @var int
      */
@@ -45,6 +55,12 @@ class CrawlerLaunch extends Command
      * @var array
      */
     protected $queues = [400, 420, 430, 440];
+
+    /**
+     * Storing requests for throttling
+     * @var Collection
+     */
+    protected $requests;
 
     /**
      * Create a new command instance.
@@ -68,26 +84,9 @@ class CrawlerLaunch extends Command
         $accountId = env('LOL_DEFAULT_ACCOUNT_ID');
         $root = 'https://'.$server.'.api.riotgames.com';
 
-//        $rules = new RequestLimitRuleset([
-//            $root => [
-//                [
-//                    'max_requests'     => 20,
-//                    'request_interval' => 1
-//                ],
-//                [
-//                    'max_requests'     => 100,
-//                    'request_interval' => 120
-//                ]
-//            ]
-//        ]);
-
-//        $stack = new HandlerStack();
-//        $stack->setHandler(new CurlHandler());
-//        $stack->push((new ThrottleMiddleware($rules))->handle());
+        $this->requests = collect();
 
         $this->client = new Client([
-            //Handler to implement the throttling
-//            'handler' => $stack,
             // Base URI is used with relative requests
             'base_uri' => $root . '/lol/',
             // You can set any number of default request options.
@@ -115,13 +114,92 @@ class CrawlerLaunch extends Command
             $count+= count($matches);
 
             //New accountId
-            $accountId = $matches->pluck('participantIdentities')->map(function($v){return collect($v)->pluck('player')->pluck('accountId');})->flatten()->unique()->diff($treated)->random();
+            if( ! $matches->count()){
+                $accountId = env('LOL_DEFAULT_ACCOUNT_ID'); //reuse our default
+            }
+            else{
+                $accountId = $matches->pluck('participantIdentities')->map(function($v){return collect($v)->pluck('player')->pluck('accountId');})->flatten()->unique()->diff($treated)->random();
+            }
+
+            $this->garbageCollectThrottling();
 
             $this->line("<fg=red;bg=yellow>".($this->created - $createdBefore)." created ({$this->created} total created)</>");
             $this->line(' ');
         }
 
 
+    }
+
+    /**
+     * Clean the requests array to avoid storing too many requests
+     */
+    public function garbageCollectThrottling(){
+        $now = microtime(true);
+        $duration = collect($this->throttles)->map(function($v){return $v[1];})->max();
+        $this->requests = collect($this->requests->filter(function($time) use ($duration, $now) {
+            return ($now-$time) < $duration;
+        })->values());
+    }
+
+    /**
+     * Check throttling
+     * @throws ThrottleException
+     */
+    public function checkThrottling(){
+        //Checking if we can run the request (throttling)
+        $now = microtime(true);
+        foreach($this->throttles as $k=>$rule){
+            $max = $rule[0];
+            $duration = $rule[1];
+            $reqs = $this->requests->filter(function($time) use ($duration, $now) {
+                return ($now-$time) < $duration;
+            });
+
+            if($reqs->count()>=$max){
+
+                $nextTime = $reqs->values()[$reqs->count() - $max] + $duration;
+
+                //Compute how long we should wait
+                $wait = ceil($nextTime - $now);
+                $this->error("Throttling (rule $k) {$wait}s");
+                sleep($wait);
+                return $this->checkThrottling();
+            }
+        }
+
+        $this->requests->push(microtime(true));
+    }
+
+    /**
+     * Get data from Riot
+     * Will wait 60s before retry in case of unexpected server error
+     * @param $url
+     * @return mixed
+     */
+    public function getRiotDataFromUrl($url){
+        try{
+            $this->checkThrottling();
+            $result = $this->client->get($url);
+        }
+        catch(ServerException $e){
+            //Ignore this match
+            $this->error('Sleeping 60s - Server Exception: ' . $e->getMessage());
+            sleep(60);
+            return $this->getRiotDataFromUrl($url);
+        }
+        catch(ClientException $e){
+            $this->error('Sleeping 60s - Client Exception: ' . $e->getMessage());
+            sleep(60);
+            return false;
+        }
+//        catch(ThrottleException $e){
+//            //Ignore this match
+//            $this->error('Throttling 1s');
+//            sleep(1);
+//            return $this->getRiotDataFromUrl($url);
+//        }
+
+        return json_decode($result->getBody(), true);
     }
 
     /**
@@ -156,7 +234,11 @@ class CrawlerLaunch extends Command
             }catch(Missing404Exception $e){
                 //If we did not, then we need to fetch the details
 //                $time = microtime(true);
-                $match = $this->toJson($this->client->get('match/v3/matches/' . $matchId));
+                $match = $this->getRiotDataFromUrl('match/v3/matches/' . $matchId);
+                if( ! $match){
+                    //If no match found, continue to next match
+                    continue;
+                }
                 $matchesDetails->push($match);
 
                 //Store the match
@@ -169,14 +251,6 @@ class CrawlerLaunch extends Command
 
                 //Increment creation counter
                 $this->created++;
-
-                //Extend time taken
-//                $timespent = (microtime(true) - $time);
-                sleep(2); // max 50 req/min
-            }catch(ServerException $e){
-                //Ignore this match
-                $this->error($e->getMessage());
-                sleep(60);
             }
 
             //Display progress
@@ -188,10 +262,6 @@ class CrawlerLaunch extends Command
         return $matchesDetails;
     }
 
-    public function toJson(Response $r){
-        return json_decode($r->getBody(), true);
-    }
-
     public function getMatches($accountId){
         $beginIndex = 0;
         $matches = collect([]);
@@ -199,7 +269,11 @@ class CrawlerLaunch extends Command
         $season = env('LOL_SEASON_ID');
         $queues = collect($this->queues)->map(function($v){return "queue=$v";})->implode('&');
         while(++$count<100){ //max 10000 matches taken in account
-            $result = $this->toJson($this->client->get("match/v3/matchlists/by-account/$accountId?beginIndex=$beginIndex&season=$season&$queues"));
+            $result = $this->getRiotDataFromUrl("match/v3/matchlists/by-account/$accountId?beginIndex=$beginIndex&season=$season&$queues");
+            if( ! $result){
+                //Break loop if no result
+                break;
+            }
             $matches = $matches->merge($result['matches']);
 
                 //Loop to retrieve all matches
