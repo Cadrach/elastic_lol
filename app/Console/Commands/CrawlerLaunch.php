@@ -254,7 +254,8 @@ class CrawlerLaunch extends Command
             }
 
             //Display progress
-            echo "\r" . ($k+1) . "/$total (" . round(($k+1)/$total*100, 2) . "%)                         ";
+//            echo "\r" . ($k+1) . "/$total (" . round(($k+1)/$total*100, 2) . "%)                         ";
+            echo $this->line(($k+1) . "/$total (" . round(($k+1)/$total*100, 2) . "%)");
         }
 
         //New line feed to complete progress display

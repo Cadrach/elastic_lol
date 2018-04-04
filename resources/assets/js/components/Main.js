@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Matches from './Matches';
 
 /* An example React component */
 class Main extends Component {
     render() {
         return (
             <div>
-            <h3>All Products</h3>
-        </div>
-    );
+                <h3>Ms</h3>
+                <Matches/>
+            </div>
+        );
     }
 }
 
