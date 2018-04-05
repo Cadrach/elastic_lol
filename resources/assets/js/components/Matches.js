@@ -43,7 +43,7 @@ class Matches extends Component {
         if (items.fulfilled && matches.fulfilled && champions.fulfilled) {
             return <div>
                 {matches.value.hits.hits.map(item => (
-                    <Match match={item._source} key={item._id} items={items.value.data} champions={champions.value}/>
+                    <Match match={item._source} key={item._id} items={items.value} champions={champions.value}/>
                 ))}
             </div>
         } else {
