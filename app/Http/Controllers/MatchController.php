@@ -8,7 +8,7 @@ class MatchController extends Controller
 {
     public function search(){
 		if( ! env('ELASTICSEARCH_HOST')){
-			return json_decode(file_get_contents(resource_path('assets/json/test-matches.json')), true);
+			return json_decode(file_get_contents(public_path('json/test-matches.json')), true);
 		}
 	
         $client = ElasticSearchClient::get();

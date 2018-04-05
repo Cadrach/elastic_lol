@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Console\ThrottleException;
+use Carbon\Carbon;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
@@ -81,11 +82,11 @@ class CrawlerLaunch extends Command
     public function handle()
     {
         ini_set('memory_limit', '2G');
+        $timestart = Carbon::now();
         $maxMatches = intval($this->option('max'));
         $server = trim($this->option('server'));
         $accountId = env('LOL_DEFAULT_ACCOUNT_ID');
         $root = 'https://'.$server.'.api.riotgames.com';
-
         $this->requests = collect();
 
         $this->client = new Client([
@@ -125,7 +126,7 @@ class CrawlerLaunch extends Command
 
             $this->garbageCollectThrottling();
 
-            $this->line("<fg=red;bg=yellow>".($this->created - $createdBefore)." created ({$this->created} total created)</>");
+            $this->line("<fg=red;bg=yellow>".($this->created - $createdBefore)." created ({$this->created} total created, started ".$timestart->diffForHumans().")</>");
             $this->line(' ');
         }
 
@@ -185,8 +186,14 @@ class CrawlerLaunch extends Command
         }
         catch(ServerException $e){
             //Ignore this match
-            $this->error('Sleeping 60s - Server Exception: ' . $e->getMessage());
-            sleep(60);
+            if($e->getResponse()->getStatusCode() == 503){
+                $this->error('Sleeping 5s - Server Exception: ' . $e->getMessage());
+                sleep(5);
+            }
+            else{
+                $this->error('Sleeping 60s - Server Exception: ' . $e->getMessage());
+                sleep(60);
+            }
             return $this->getRiotDataFromUrl($url);
         }
         catch(ClientException $e){
