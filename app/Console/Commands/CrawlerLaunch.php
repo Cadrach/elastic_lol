@@ -190,8 +190,13 @@ class CrawlerLaunch extends Command
             return $this->getRiotDataFromUrl($url);
         }
         catch(ClientException $e){
-            $this->error('Sleeping 10min - Client Exception: ' . $e->getMessage());
-            sleep(600);
+            if($e->getResponse()->getStatusCode() != 404){
+                $this->error('Sleeping 10min - Client Exception: ' . $e->getMessage());
+                sleep(600);
+            }
+            else{
+                $this->error("404 Not found: $url");
+            }
             return false;
         }
 //        catch(ThrottleException $e){
