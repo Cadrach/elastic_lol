@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom';
 // import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Matches from './Matches';
 
+import CssBaseline from 'material-ui/CssBaseline';
+
 /* An example React component */
 class Main extends Component {
     render() {
         return (
             <div>
+                <CssBaseline />
                 <h3>Ms</h3>
                 <Matches/>
             </div>
