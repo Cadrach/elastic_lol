@@ -43,7 +43,7 @@ class CrawlerLaunch extends Command
 //        [20, 1],
 //        [100, 125],
 //        [3, 10],
-        [30000, 600]
+        [10000, 600]
     ];
 
     /**
@@ -88,6 +88,7 @@ class CrawlerLaunch extends Command
         $accountId = env('LOL_DEFAULT_ACCOUNT_ID');
         $root = 'https://'.$server.'.api.riotgames.com';
         $this->requests = collect();
+        $previousAccounts = collect();
 
         $this->client = new Client([
             // Base URI is used with relative requests
@@ -117,11 +118,19 @@ class CrawlerLaunch extends Command
             $count+= count($matches);
 
             //New accountId
-            if( ! $matches->count()){
+            if( ! $matches->count() && $previousAccounts->count()){
+                //If account did not have any match, but previous account still has some accounts take another one
+                $accountId = $previousAccounts->random();
+                $previousAccounts = $previousAccounts->diff([$accountId])->diff($treated);
+            }
+            else if( ! $matches->count() && ! $previousAccounts->count()){
+                //If we have no match and no previousAccounts left, use the default
                 $accountId = env('LOL_DEFAULT_ACCOUNT_ID'); //reuse our default
             }
             else{
-                $accountId = $matches->pluck('participantIdentities')->map(function($v){return collect($v)->pluck('player')->pluck('accountId');})->flatten()->unique()->diff($treated)->random();
+                //Set the list of previousAccounts, and take a new one randomly
+                $previousAccounts = $matches->pluck('participantIdentities')->map(function($v){return collect($v)->pluck('player')->pluck('accountId');})->flatten()->unique()->diff($treated);
+                $accountId = $previousAccounts->random();
             }
 
             $this->garbageCollectThrottling();
