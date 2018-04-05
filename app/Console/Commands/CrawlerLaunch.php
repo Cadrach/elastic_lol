@@ -39,9 +39,10 @@ class CrawlerLaunch extends Command
      * @var array
      */
     protected $throttles = [
-        [20, 1],
-        [100, 125],
+//        [20, 1],
+//        [100, 125],
 //        [3, 10],
+        [30000, 600]
     ];
 
     /**
@@ -79,6 +80,7 @@ class CrawlerLaunch extends Command
      */
     public function handle()
     {
+        ini_set('memory_limit', '2G');
         $maxMatches = intval($this->option('max'));
         $server = trim($this->option('server'));
         $accountId = env('LOL_DEFAULT_ACCOUNT_ID');
@@ -188,8 +190,8 @@ class CrawlerLaunch extends Command
             return $this->getRiotDataFromUrl($url);
         }
         catch(ClientException $e){
-            $this->error('Sleeping 60s - Client Exception: ' . $e->getMessage());
-            sleep(60);
+            $this->error('Sleeping 10min - Client Exception: ' . $e->getMessage());
+            sleep(600);
             return false;
         }
 //        catch(ThrottleException $e){
@@ -254,8 +256,8 @@ class CrawlerLaunch extends Command
             }
 
             //Display progress
-//            echo "\r" . ($k+1) . "/$total (" . round(($k+1)/$total*100, 2) . "%)                         ";
-            echo $this->line(($k+1) . "/$total (" . round(($k+1)/$total*100, 2) . "%)");
+            echo "\r" . ($k+1) . "/$total (" . round(($k+1)/$total*100, 2) . "%)                         ";
+//            echo $this->line(($k+1) . "/$total (" . round(($k+1)/$total*100, 2) . "%)");
         }
 
         //New line feed to complete progress display
