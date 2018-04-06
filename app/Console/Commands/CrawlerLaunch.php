@@ -6,6 +6,7 @@ use App\Console\ThrottleException;
 use Carbon\Carbon;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
@@ -214,6 +215,10 @@ class CrawlerLaunch extends Command
                 $this->error("404 Not found: $url");
             }
             return false;
+        }
+        catch(ConnectException $e){
+            $this->error('Sleeping 60s - Connect Exception: ' . $e->getMessage());
+            sleep(60);
         }
 //        catch(ThrottleException $e){
 //            //Ignore this match
