@@ -105,7 +105,7 @@
 			"type": "nested",
             "properties": {
               "championId": {
-                "type": "long"
+                "type": "keyword"
               },
               "highestAchievedSeasonTier": {
                 "type": "text",
@@ -117,13 +117,13 @@
                 }
               },
               "participantId": {
-                "type": "long"
+                "type": "keyword"
               },
               "spell1Id": {
-                "type": "long"
+                "type": "keyword"
               },
               "spell2Id": {
-                "type": "long"
+                "type": "keyword"
               },
               "stats": {
 				"type": "nested",
@@ -180,25 +180,25 @@
                     "type": "long"
                   },
                   "item0": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "item1": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "item2": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "item3": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "item4": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "item5": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "item6": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "killingSprees": {
                     "type": "long"
@@ -246,82 +246,82 @@
                     "type": "long"
                   },
                   "perk0": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk0Var1": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk0Var2": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk0Var3": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk1": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk1Var1": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk1Var2": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk1Var3": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk2": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk2Var1": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk2Var2": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk2Var3": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk3": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk3Var1": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk3Var2": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk3Var3": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk4": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk4Var1": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk4Var2": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk4Var3": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk5": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk5Var1": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk5Var2": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perk5Var3": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perkPrimaryStyle": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "perkSubStyle": {
-                    "type": "long"
+                    "type": "keyword"
                   },
                   "physicalDamageDealt": {
                     "type": "long"
