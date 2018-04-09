@@ -1,0 +1,662 @@
+{
+  "lol_match": {
+    "mappings": {
+      "lol_match": {
+        "properties": {
+          "gameCreation": {
+            "type": "long"
+          },
+          "gameDuration": {
+            "type": "long"
+          },
+          "gameId": {
+            "type": "long"
+          },
+          "gameMode": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "gameType": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "gameVersion": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "mapId": {
+            "type": "long"
+          },
+          "participantIdentities": {
+            "properties": {
+              "participantId": {
+                "type": "long"
+              },
+              "player": {
+                "properties": {
+                  "accountId": {
+                    "type": "long"
+                  },
+                  "currentAccountId": {
+                    "type": "long"
+                  },
+                  "currentPlatformId": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "matchHistoryUri": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "platformId": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "profileIcon": {
+                    "type": "long"
+                  },
+                  "summonerId": {
+                    "type": "long"
+                  },
+                  "summonerName": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "participants": {
+			"type": "nested",
+            "properties": {
+              "championId": {
+                "type": "long"
+              },
+              "highestAchievedSeasonTier": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "participantId": {
+                "type": "long"
+              },
+              "spell1Id": {
+                "type": "long"
+              },
+              "spell2Id": {
+                "type": "long"
+              },
+              "stats": {
+				"type": "nested",
+                "properties": {
+                  "assists": {
+                    "type": "long"
+                  },
+                  "champLevel": {
+                    "type": "long"
+                  },
+                  "combatPlayerScore": {
+                    "type": "long"
+                  },
+                  "damageDealtToObjectives": {
+                    "type": "long"
+                  },
+                  "damageDealtToTurrets": {
+                    "type": "long"
+                  },
+                  "damageSelfMitigated": {
+                    "type": "long"
+                  },
+                  "deaths": {
+                    "type": "long"
+                  },
+                  "doubleKills": {
+                    "type": "long"
+                  },
+                  "firstBloodAssist": {
+                    "type": "boolean"
+                  },
+                  "firstBloodKill": {
+                    "type": "boolean"
+                  },
+                  "firstInhibitorAssist": {
+                    "type": "boolean"
+                  },
+                  "firstInhibitorKill": {
+                    "type": "boolean"
+                  },
+                  "firstTowerAssist": {
+                    "type": "boolean"
+                  },
+                  "firstTowerKill": {
+                    "type": "boolean"
+                  },
+                  "goldEarned": {
+                    "type": "long"
+                  },
+                  "goldSpent": {
+                    "type": "long"
+                  },
+                  "inhibitorKills": {
+                    "type": "long"
+                  },
+                  "item0": {
+                    "type": "long"
+                  },
+                  "item1": {
+                    "type": "long"
+                  },
+                  "item2": {
+                    "type": "long"
+                  },
+                  "item3": {
+                    "type": "long"
+                  },
+                  "item4": {
+                    "type": "long"
+                  },
+                  "item5": {
+                    "type": "long"
+                  },
+                  "item6": {
+                    "type": "long"
+                  },
+                  "killingSprees": {
+                    "type": "long"
+                  },
+                  "kills": {
+                    "type": "long"
+                  },
+                  "largestCriticalStrike": {
+                    "type": "long"
+                  },
+                  "largestKillingSpree": {
+                    "type": "long"
+                  },
+                  "largestMultiKill": {
+                    "type": "long"
+                  },
+                  "longestTimeSpentLiving": {
+                    "type": "long"
+                  },
+                  "magicDamageDealt": {
+                    "type": "long"
+                  },
+                  "magicDamageDealtToChampions": {
+                    "type": "long"
+                  },
+                  "magicalDamageTaken": {
+                    "type": "long"
+                  },
+                  "neutralMinionsKilled": {
+                    "type": "long"
+                  },
+                  "neutralMinionsKilledEnemyJungle": {
+                    "type": "long"
+                  },
+                  "neutralMinionsKilledTeamJungle": {
+                    "type": "long"
+                  },
+                  "objectivePlayerScore": {
+                    "type": "long"
+                  },
+                  "participantId": {
+                    "type": "long"
+                  },
+                  "pentaKills": {
+                    "type": "long"
+                  },
+                  "perk0": {
+                    "type": "long"
+                  },
+                  "perk0Var1": {
+                    "type": "long"
+                  },
+                  "perk0Var2": {
+                    "type": "long"
+                  },
+                  "perk0Var3": {
+                    "type": "long"
+                  },
+                  "perk1": {
+                    "type": "long"
+                  },
+                  "perk1Var1": {
+                    "type": "long"
+                  },
+                  "perk1Var2": {
+                    "type": "long"
+                  },
+                  "perk1Var3": {
+                    "type": "long"
+                  },
+                  "perk2": {
+                    "type": "long"
+                  },
+                  "perk2Var1": {
+                    "type": "long"
+                  },
+                  "perk2Var2": {
+                    "type": "long"
+                  },
+                  "perk2Var3": {
+                    "type": "long"
+                  },
+                  "perk3": {
+                    "type": "long"
+                  },
+                  "perk3Var1": {
+                    "type": "long"
+                  },
+                  "perk3Var2": {
+                    "type": "long"
+                  },
+                  "perk3Var3": {
+                    "type": "long"
+                  },
+                  "perk4": {
+                    "type": "long"
+                  },
+                  "perk4Var1": {
+                    "type": "long"
+                  },
+                  "perk4Var2": {
+                    "type": "long"
+                  },
+                  "perk4Var3": {
+                    "type": "long"
+                  },
+                  "perk5": {
+                    "type": "long"
+                  },
+                  "perk5Var1": {
+                    "type": "long"
+                  },
+                  "perk5Var2": {
+                    "type": "long"
+                  },
+                  "perk5Var3": {
+                    "type": "long"
+                  },
+                  "perkPrimaryStyle": {
+                    "type": "long"
+                  },
+                  "perkSubStyle": {
+                    "type": "long"
+                  },
+                  "physicalDamageDealt": {
+                    "type": "long"
+                  },
+                  "physicalDamageDealtToChampions": {
+                    "type": "long"
+                  },
+                  "physicalDamageTaken": {
+                    "type": "long"
+                  },
+                  "playerScore0": {
+                    "type": "long"
+                  },
+                  "playerScore1": {
+                    "type": "long"
+                  },
+                  "playerScore2": {
+                    "type": "long"
+                  },
+                  "playerScore3": {
+                    "type": "long"
+                  },
+                  "playerScore4": {
+                    "type": "long"
+                  },
+                  "playerScore5": {
+                    "type": "long"
+                  },
+                  "playerScore6": {
+                    "type": "long"
+                  },
+                  "playerScore7": {
+                    "type": "long"
+                  },
+                  "playerScore8": {
+                    "type": "long"
+                  },
+                  "playerScore9": {
+                    "type": "long"
+                  },
+                  "quadraKills": {
+                    "type": "long"
+                  },
+                  "sightWardsBoughtInGame": {
+                    "type": "long"
+                  },
+                  "timeCCingOthers": {
+                    "type": "long"
+                  },
+                  "totalDamageDealt": {
+                    "type": "long"
+                  },
+                  "totalDamageDealtToChampions": {
+                    "type": "long"
+                  },
+                  "totalDamageTaken": {
+                    "type": "long"
+                  },
+                  "totalHeal": {
+                    "type": "long"
+                  },
+                  "totalMinionsKilled": {
+                    "type": "long"
+                  },
+                  "totalPlayerScore": {
+                    "type": "long"
+                  },
+                  "totalScoreRank": {
+                    "type": "long"
+                  },
+                  "totalTimeCrowdControlDealt": {
+                    "type": "long"
+                  },
+                  "totalUnitsHealed": {
+                    "type": "long"
+                  },
+                  "tripleKills": {
+                    "type": "long"
+                  },
+                  "trueDamageDealt": {
+                    "type": "long"
+                  },
+                  "trueDamageDealtToChampions": {
+                    "type": "long"
+                  },
+                  "trueDamageTaken": {
+                    "type": "long"
+                  },
+                  "turretKills": {
+                    "type": "long"
+                  },
+                  "unrealKills": {
+                    "type": "long"
+                  },
+                  "visionScore": {
+                    "type": "long"
+                  },
+                  "visionWardsBoughtInGame": {
+                    "type": "long"
+                  },
+                  "wardsKilled": {
+                    "type": "long"
+                  },
+                  "wardsPlaced": {
+                    "type": "long"
+                  },
+                  "win": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "teamId": {
+                "type": "long"
+              },
+              "timeline": {
+                "properties": {
+                  "creepsPerMinDeltas": {
+                    "properties": {
+                      "0-10": {
+                        "type": "float"
+                      },
+                      "10-20": {
+                        "type": "float"
+                      },
+                      "20-30": {
+                        "type": "float"
+                      },
+                      "30-end": {
+                        "type": "float"
+                      }
+                    }
+                  },
+                  "csDiffPerMinDeltas": {
+                    "properties": {
+                      "0-10": {
+                        "type": "float"
+                      },
+                      "10-20": {
+                        "type": "long"
+                      },
+                      "20-30": {
+                        "type": "long"
+                      },
+                      "30-end": {
+                        "type": "float"
+                      }
+                    }
+                  },
+                  "damageTakenDiffPerMinDeltas": {
+                    "properties": {
+                      "0-10": {
+                        "type": "float"
+                      },
+                      "10-20": {
+                        "type": "float"
+                      },
+                      "20-30": {
+                        "type": "float"
+                      },
+                      "30-end": {
+                        "type": "float"
+                      }
+                    }
+                  },
+                  "damageTakenPerMinDeltas": {
+                    "properties": {
+                      "0-10": {
+                        "type": "float"
+                      },
+                      "10-20": {
+                        "type": "float"
+                      },
+                      "20-30": {
+                        "type": "float"
+                      },
+                      "30-end": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "goldPerMinDeltas": {
+                    "properties": {
+                      "0-10": {
+                        "type": "float"
+                      },
+                      "10-20": {
+                        "type": "long"
+                      },
+                      "20-30": {
+                        "type": "float"
+                      },
+                      "30-end": {
+                        "type": "float"
+                      }
+                    }
+                  },
+                  "lane": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "participantId": {
+                    "type": "long"
+                  },
+                  "role": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "xpDiffPerMinDeltas": {
+                    "properties": {
+                      "0-10": {
+                        "type": "float"
+                      },
+                      "10-20": {
+                        "type": "float"
+                      },
+                      "20-30": {
+                        "type": "float"
+                      },
+                      "30-end": {
+                        "type": "float"
+                      }
+                    }
+                  },
+                  "xpPerMinDeltas": {
+                    "properties": {
+                      "0-10": {
+                        "type": "float"
+                      },
+                      "10-20": {
+                        "type": "float"
+                      },
+                      "20-30": {
+                        "type": "long"
+                      },
+                      "30-end": {
+                        "type": "float"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "platformId": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "queueId": {
+            "type": "long"
+          },
+          "seasonId": {
+            "type": "long"
+          },
+          "teams": {
+            "properties": {
+              "bans": {
+                "properties": {
+                  "championId": {
+                    "type": "long"
+                  },
+                  "pickTurn": {
+                    "type": "long"
+                  }
+                }
+              },
+              "baronKills": {
+                "type": "long"
+              },
+              "dominionVictoryScore": {
+                "type": "long"
+              },
+              "dragonKills": {
+                "type": "long"
+              },
+              "firstBaron": {
+                "type": "boolean"
+              },
+              "firstBlood": {
+                "type": "boolean"
+              },
+              "firstDragon": {
+                "type": "boolean"
+              },
+              "firstInhibitor": {
+                "type": "boolean"
+              },
+              "firstRiftHerald": {
+                "type": "boolean"
+              },
+              "firstTower": {
+                "type": "boolean"
+              },
+              "inhibitorKills": {
+                "type": "long"
+              },
+              "riftHeraldKills": {
+                "type": "long"
+              },
+              "teamId": {
+                "type": "long"
+              },
+              "towerKills": {
+                "type": "long"
+              },
+              "vilemawKills": {
+                "type": "long"
+              },
+              "win": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+    "_source": false,
+    "query": {
+        "nested" : {
+            "path" : "participants",
+            "query" : {
+                "bool" : {
+                    "must" : [
+                    { "match" : {"participants.championId" : 56} }
+                    ]
+                }
+            },
+            "inner_hits" : {}
+        }
+    },
+    "size": 10
+}
