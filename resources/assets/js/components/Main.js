@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 // import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Matches from './Matches';
+import Participants from './Participants';
 
 import CssBaseline from 'material-ui/CssBaseline';
 
@@ -12,7 +13,7 @@ class Main extends Component {
             <div>
                 <CssBaseline />
                 <h3>Ms</h3>
-                <Matches/>
+                <Participants/>
             </div>
         );
     }

@@ -7,6 +7,7 @@ use App\Models\ElasticSearchClient;
 class MatchController extends Controller
 {
     public function search(){
+
 		if( ! env('ELASTICSEARCH_HOST')){
 			return json_decode(file_get_contents(public_path('json/test-matches.json')), true);
 		}
@@ -32,5 +33,9 @@ class MatchController extends Controller
               }
             }')
         ]);
+    }
+
+    public function participants(){
+        return json_decode(file_get_contents(public_path('json/test-participants.json')), true);
     }
 }
