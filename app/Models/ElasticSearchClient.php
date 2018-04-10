@@ -19,7 +19,17 @@ class ElasticSearchClient
      */
     public static function get(){
         if(self::$client === null){
-            self::$client = ClientBuilder::create()->build();
+            $host = [
+                'host' => env('ELASTICSEARCH_HOST'),
+                'port' => env('ELASTICSEARCH_PORT'),
+                'scheme' => env('ELASTICSEARCH_SCHEME'),
+                'user' => env('ELASTICSEARCH_USER'),
+                'pass' => env('ELASTICSEARCH_PASS'),
+            ];
+
+            self::$client = ClientBuilder::create()
+                ->setHosts([$host])
+                ->build();
         }
         return self::$client;
     }
