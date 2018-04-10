@@ -22,6 +22,7 @@ export default class Participant extends Component {
                 ))}
                 <span>{p.kills}/{p.deaths}/{p.assists}</span>
                 <span>{p.identity.summonerName}</span>
+                <span>{p.enemyTeam.damageType}</span>
             </div>
         );
     }

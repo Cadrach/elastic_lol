@@ -37694,6 +37694,11 @@ var Participant = function (_Component) {
                     'span',
                     null,
                     p.identity.summonerName
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    null,
+                    p.enemyTeam.damageType
                 )
             );
         }
