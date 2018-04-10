@@ -66,6 +66,18 @@ class CrawlerLaunch extends Command
     protected $requests;
 
     /**
+     * List of complete items
+     * @var
+     */
+    protected $completeItems;
+
+    /**
+     * Max level of skills per champ
+     * @var
+     */
+    protected $maxLevelSkills;
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -90,6 +102,22 @@ class CrawlerLaunch extends Command
         $root = 'https://'.$server.'.api.riotgames.com';
         $this->requests = collect();
         $previousAccounts = collect();
+
+        //Setup list of completed items
+        $this->completeItems = collect(json_decode(file_get_contents(public_path('json/items.json')), true)['data'])
+            ->filter(function($item){
+                return !isset($item['into']) && isset($item['from']) && (!isset($item['tags']) || !in_array('Consumable', $item['tags']));
+            })
+            ->pluck('id')
+        ;
+
+        //Setup max level of skills
+        $this->maxLevelSkills = collect(json_decode(file_get_contents(public_path('json/champions.json')), true)['data'])
+            ->reduce(function($mem, $champ){
+                $mem[$champ['id']] = collect($champ['spells'])->pluck('maxrank');
+                return $mem;
+            }, [])
+        ;
 
         $this->client = new Client([
             // Base URI is used with relative requests
@@ -267,7 +295,17 @@ class CrawlerLaunch extends Command
                     //If no match found, continue to next match
                     continue;
                 }
+
+                //Fetch timeline
+                $timeline = $this->getRiotDataFromUrl('match/v3/timelines/by-match/' . $matchId);
+
+                $participants = $this->aggregateParticipantsData($match, $timeline);
+
+                //
                 $matchesDetails->push($match);
+
+//                print_r($participants);
+                die();
 
                 //Store the match
                 $elastic->index([
@@ -317,5 +355,154 @@ class CrawlerLaunch extends Command
         $this->info("{$matches->count()} matches found for $accountId");
 
         return $matches;
+    }
+
+    /**
+     * Aggregate participants statistics before storage
+     * @param $match
+     * @param $timeline
+     * @return array
+     * @throws \Exception
+     */
+    public function aggregateParticipantsData($match, $timeline){
+
+        //Rounding percent function
+        function percent($v){
+            return round($v * 100, 2);
+        }
+
+        //Prepare timeline per participant
+        $events = [];
+        foreach($timeline['frames'] as $frame){
+            $ts = $frame['timestamp'];
+            foreach($frame['events'] as $event){
+                if(isset($event['participantId'])){
+                    $event['timestamp']+= $ts;
+                    $pId = $event['participantId'];
+                    $type = $event['type'];
+
+                    unset($event['participantId']);
+                    unset($event['type']);
+
+                    $events[$pId][$type][] = $event;
+
+                    //Special case of undo: remove previous action of ITEM_SOLD or ITEM_PURCHASED
+                    if($type == 'ITEM_UNDO'){
+                        if($event['afterId']>0 && $event['beforeId'] == 0) $toRemove = 'ITEM_SOLD';
+                        else if($event['afterId'] == 0 && $event['beforeId'] > 0) $toRemove = 'ITEM_PURCHASED';
+                        else throw new \Exception('Do not know how to manage this case');
+
+                        //Remove event
+                        $removed = array_pop($events[$pId][$toRemove]);
+
+                        //print_r(['rem' => $removed, 'undo' => $event, 'type'=>$toRemove]);
+                    }
+                }
+
+            }
+        }
+
+        //Teams stats
+        $teams = collect(collect($match['participants'])->groupBy('teamId')->reduce(function($mem, $parts){
+            foreach($parts as $part){
+                @$mem[$part['teamId']]['totalDamageDealt']               += $part['stats']['totalDamageDealt'];
+                @$mem[$part['teamId']]['magicDamageDealt']               += $part['stats']['magicDamageDealt'];
+                @$mem[$part['teamId']]['physicalDamageDealt']            += $part['stats']['physicalDamageDealt'];
+                @$mem[$part['teamId']]['trueDamageDealt']                += $part['stats']['trueDamageDealt'];
+
+                @$mem[$part['teamId']]['totalDamageDealtToChampions']    += $part['stats']['totalDamageDealtToChampions'];
+                @$mem[$part['teamId']]['magicDamageDealtToChampions']    += $part['stats']['magicDamageDealtToChampions'];
+                @$mem[$part['teamId']]['physicalDamageDealtToChampions'] += $part['stats']['physicalDamageDealtToChampions'];
+                @$mem[$part['teamId']]['trueDamageDealtToChampions']     += $part['stats']['trueDamageDealtToChampions'];
+                @$mem[$part['teamId']]['totalHeal']                      += $part['stats']['totalHeal'];
+                @$mem[$part['teamId']]['totalHealer']                    += $part['stats']['totalUnitsHealed']>1 ? $part['stats']['totalHeal']:0;
+                @$mem[$part['teamId']]['totalLifeSteal']                 += $part['stats']['totalUnitsHealed']<=1 ? $part['stats']['totalHeal']:0;
+
+                @$mem[$part['teamId']]['totalDamageTaken']               += $part['stats']['totalDamageTaken'];
+                @$mem[$part['teamId']]['magicalDamageTaken']             += $part['stats']['magicalDamageTaken'];
+                @$mem[$part['teamId']]['physicalDamageTaken']            += $part['stats']['physicalDamageTaken'];
+                @$mem[$part['teamId']]['trueDamageTaken']                += $part['stats']['trueDamageTaken'];
+            }
+
+            return $mem;
+        }, []))->map(function($team){
+            $team['percentMagicDamageDealt'] = percent($team['magicDamageDealt'] / $team['totalDamageDealt']);
+            $team['percentPhysicalDamageDealt'] = percent($team['physicalDamageDealt'] / $team['totalDamageDealt']);
+            $team['percentTrueDamageDealt'] = percent($team['trueDamageDealt'] / $team['totalDamageDealt']);
+
+            $team['percentMagicDamageDealtToChampions'] = percent($team['magicDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
+            $team['percentPhysicalDamageDealtToChampions'] = percent($team['physicalDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
+            $team['percentTrueDamageDealtToChampions'] = percent($team['trueDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
+
+            $team['percentTotalHeal'] = percent($team['totalHeal'] / $team['totalDamageTaken']);
+            $team['percentMagicalDamageTaken'] = percent($team['magicalDamageTaken'] / $team['totalDamageTaken']);
+            $team['percentPhysicalDamageTaken'] = percent($team['physicalDamageTaken'] / $team['totalDamageTaken']);
+            $team['percentTrueDamageTaken'] = percent($team['trueDamageTaken'] / $team['totalDamageTaken']);
+
+
+            return $team;
+        });
+
+        //Now we loop on each participant to aggregate information
+        $participants = [];
+        $completeItems = $this->completeItems;
+        foreach($match['participants'] as $part){
+
+            $pId = $part['participantId'];
+            $teamId = $part['teamId'];
+            $stats = $part['stats'];
+            unset($part['stats']);
+            $part = array_merge($part, $stats);
+            $maxLevelSkills = $this->maxLevelSkills[$part['championId']];
+            $teamIdEnemy = $teamId == 100 ? 200:100;
+
+            //Game information
+            $part['gameId'] = $match['gameId'];
+            $part['patchVersion'] = floatval($match['gameVersion']);
+            $part['gameVersion'] = $match['gameVersion'];
+            $part['platformId'] = $match['platformId'];
+            $part['gameCreation'] = $match['gameCreation'];
+            $part['gameDuration'] = $match['gameDuration'];
+            $part['queueId'] = $match['queueId'];
+            $part['mapId'] = $match['mapId'];
+            $part['seasonId'] = $match['seasonId'];
+            $part['gameMode'] = $match['gameMode'];
+            $part['gameType'] = $match['gameType'];
+
+            //Versus & With
+            $part['playVersus'] = collect($match['participants'])->filter(function($p) use ($teamId){return $teamId != $p['teamId'];})->pluck('championId');
+            $part['playWith'] = collect($match['participants'])->filter(function($p) use ($teamId, $pId){return $teamId == $p['teamId'] && $p['participantId'] != $pId;})->pluck('championId');
+
+            //Events
+            $part['events'] = $events[$pId];
+
+            //Completed items (build order)
+            $part['itemBuildOrder'] = collect($events[$pId]['ITEM_PURCHASED'])->reduce(function($mem, $e) use($completeItems){
+                if($completeItems->contains($e['itemId'])){
+                    $mem[] = $e['itemId'];
+                }
+                return $mem;
+            }, []);
+
+            //Skill order
+            $leveled = [];
+            $part['skillOrder'] = collect($events[$pId]['SKILL_LEVEL_UP'])->reduce(function($mem, $e) use($maxLevelSkills, &$leveled){
+                $slot = $e['skillSlot'] - 1;
+                @$leveled[$slot]++;
+                if($leveled[$slot] == $maxLevelSkills[$slot]-1){
+                    $mem[] = $slot;
+                }
+                return $mem;
+            }, []);
+
+            //Teams
+            $part['team'] = $teams[$teamId];
+            $part['enemyTeam'] = $teams[$teamIdEnemy];
+
+            //
+            $participants[] = $part;
+        }
+
+        return $participants;
     }
 }
