@@ -36,6 +36,36 @@ class MatchController extends Controller
     }
 
     public function participants(){
+        if( ! env('ELASTICSEARCH_HOST')) {
+            return json_decode(file_get_contents(public_path('json/test-participants.json')), true);
+        }
+
+        $client = ElasticSearchClient::get();
+
+        return $client->search([
+            'index' => 'lol_participant',
+            'type' => 'lol_participant',
+            'body' => json_decode('{
+                "size": 20,
+                "query": {
+                "bool": {
+                  "must": [
+                    {
+                      "match": {
+                        "championId": 56
+                      }
+                    },
+                    {
+                      "match": {
+                        "highestAchievedSeasonTier": "PLATINUM"
+                      }
+                    }
+                  ]
+                }
+                }
+            }')
+        ]);
+
         return json_decode(file_get_contents(public_path('json/test-participants.json')), true);
     }
 }

@@ -37668,11 +37668,11 @@ var Participant = function (_Component) {
             var _this2 = this;
 
             var p = this.props.participant;
+            console.log(p);
             var champion = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.props.champions.data, { id: p.championId });
             var version = this.props.champions.version;
             var img = 'http://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + champion.key + '.png';
-            var stat = p.stats;
-            var items = [stat.item0, stat.item1, stat.item2, stat.item3, stat.item4, stat.item6];
+            var items = [p.item0, p.item1, p.item2, p.item3, p.item4, p.item6];
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -37684,11 +37684,11 @@ var Participant = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'span',
                     null,
-                    stat.kills,
+                    p.kills,
                     '/',
-                    stat.deaths,
+                    p.deaths,
                     '/',
-                    stat.assists
+                    p.assists
                 )
             );
         }
@@ -81199,12 +81199,11 @@ var Participants = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_4_material_ui_List___default.a,
                         null,
-                        participants.value.hits.hits.map(function (hit, index) {
-                            var participant = hit.inner_hits.participants.hits.hits[0]._source;
+                        participants.value.hits.hits.map(function (participant, index) {
                             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_4_material_ui_List__["ListItem"],
                                 { button: true, key: index },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Participant__["a" /* default */], { participant: participant, items: items.value, champions: champions.value })
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Participant__["a" /* default */], { participant: participant._source, items: items.value, champions: champions.value })
                             );
                         })
                     )

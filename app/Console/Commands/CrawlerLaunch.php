@@ -304,15 +304,34 @@ class CrawlerLaunch extends Command
                 //
                 $matchesDetails->push($match);
 
-//                print_r($participants);
-                die();
+                $bulkBody = [
+                    ['index'=> [
+                        '_index' => 'lol_match',
+                        '_type' => 'lol_match',
+                        '_id' => $matchId,
+                    ]],
+                    $match,
+                    
+                    ['index'=> [
+                        '_index' => 'lol_timeline',
+                        '_type' => 'lol_timeline',
+                        '_id' => $matchId,
+                    ]],
+                    $timeline
+                ];
 
-                //Store the match
-                $elastic->index([
-                    'index' => 'lol_match',
-                    'type' => 'lol_match',
-                    'id' => $matchId,
-                    'body' => $match,
+                foreach($participants as $p){
+                    $bulkBody[] = ['index'=> [
+                        '_index' => 'lol_participant',
+                        '_type' => 'lol_participant',
+                        '_id' => $matchId . '_' . $p['participantId'],
+                    ]];
+                    $bulkBody[] = $p;
+                }
+
+                //
+                $elastic->bulk([
+                    'body' => $bulkBody
                 ]);
 
                 //Increment creation counter
@@ -366,11 +385,6 @@ class CrawlerLaunch extends Command
      */
     public function aggregateParticipantsData($match, $timeline){
 
-        //Rounding percent function
-        function percent($v){
-            return round($v * 100, 2);
-        }
-
         //Prepare timeline per participant
         $events = [];
         foreach($timeline['frames'] as $frame){
@@ -391,6 +405,11 @@ class CrawlerLaunch extends Command
                         if($event['afterId']>0 && $event['beforeId'] == 0) $toRemove = 'ITEM_SOLD';
                         else if($event['afterId'] == 0 && $event['beforeId'] > 0) $toRemove = 'ITEM_PURCHASED';
                         else throw new \Exception('Do not know how to manage this case');
+
+                        if(!isset($events[$pId][$toRemove])){
+                            //Ugly but sometimes data seems to be stored wrongly for UNDO
+                            $toRemove = $toRemove == 'ITEM_PURCHASED' ? 'ITEM_SOLD':'ITEM_PURCHASED';
+                        }
 
                         //Remove event
                         $removed = array_pop($events[$pId][$toRemove]);
@@ -426,19 +445,22 @@ class CrawlerLaunch extends Command
 
             return $mem;
         }, []))->map(function($team){
-            $team['percentMagicDamageDealt'] = percent($team['magicDamageDealt'] / $team['totalDamageDealt']);
-            $team['percentPhysicalDamageDealt'] = percent($team['physicalDamageDealt'] / $team['totalDamageDealt']);
-            $team['percentTrueDamageDealt'] = percent($team['trueDamageDealt'] / $team['totalDamageDealt']);
+            $team['percentMagicDamageDealt'] = $this->percent($team['magicDamageDealt'] / $team['totalDamageDealt']);
+            $team['percentPhysicalDamageDealt'] = $this->percent($team['physicalDamageDealt'] / $team['totalDamageDealt']);
+            $team['percentTrueDamageDealt'] = $this->percent($team['trueDamageDealt'] / $team['totalDamageDealt']);
 
-            $team['percentMagicDamageDealtToChampions'] = percent($team['magicDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
-            $team['percentPhysicalDamageDealtToChampions'] = percent($team['physicalDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
-            $team['percentTrueDamageDealtToChampions'] = percent($team['trueDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
+            $team['percentMagicDamageDealtToChampions'] = $this->percent($team['magicDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
+            $team['percentPhysicalDamageDealtToChampions'] = $this->percent($team['physicalDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
+            $team['percentTrueDamageDealtToChampions'] = $this->percent($team['trueDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
 
-            $team['percentTotalHeal'] = percent($team['totalHeal'] / $team['totalDamageTaken']);
-            $team['percentMagicalDamageTaken'] = percent($team['magicalDamageTaken'] / $team['totalDamageTaken']);
-            $team['percentPhysicalDamageTaken'] = percent($team['physicalDamageTaken'] / $team['totalDamageTaken']);
-            $team['percentTrueDamageTaken'] = percent($team['trueDamageTaken'] / $team['totalDamageTaken']);
+            $team['percentTotalHeal'] = $this->percent($team['totalHeal'] / $team['totalDamageTaken']);
+            $team['percentMagicalDamageTaken'] = $this->percent($team['magicalDamageTaken'] / $team['totalDamageTaken']);
+            $team['percentPhysicalDamageTaken'] = $this->percent($team['physicalDamageTaken'] / $team['totalDamageTaken']);
+            $team['percentTrueDamageTaken'] = $this->percent($team['trueDamageTaken'] / $team['totalDamageTaken']);
 
+            $team['damageType'] = 'MIXED';
+            if($team['percentMagicDamageDealtToChampions']>60){$team['damageType'] = 'AP';}
+            if($team['percentPhysicalDamageDealtToChampions']>60){$team['damageType'] = 'AD';}
 
             return $team;
         });
@@ -474,26 +496,28 @@ class CrawlerLaunch extends Command
             $part['playWith'] = collect($match['participants'])->filter(function($p) use ($teamId, $pId){return $teamId == $p['teamId'] && $p['participantId'] != $pId;})->pluck('championId');
 
             //Events
-            $part['events'] = $events[$pId];
+            if(isset($events[$pId])){
+                $part['events'] =  $events[$pId];
 
-            //Completed items (build order)
-            $part['itemBuildOrder'] = collect($events[$pId]['ITEM_PURCHASED'])->reduce(function($mem, $e) use($completeItems){
-                if($completeItems->contains($e['itemId'])){
-                    $mem[] = $e['itemId'];
-                }
-                return $mem;
-            }, []);
+                //Completed items (build order)
+                $part['itemBuildOrder'] = collect($events[$pId]['ITEM_PURCHASED'])->reduce(function($mem, $e) use($completeItems){
+                    if($completeItems->contains($e['itemId'])){
+                        $mem[] = $e['itemId'];
+                    }
+                    return $mem;
+                }, []);
 
-            //Skill order
-            $leveled = [];
-            $part['skillOrder'] = collect($events[$pId]['SKILL_LEVEL_UP'])->reduce(function($mem, $e) use($maxLevelSkills, &$leveled){
-                $slot = $e['skillSlot'] - 1;
-                @$leveled[$slot]++;
-                if($leveled[$slot] == $maxLevelSkills[$slot]-1){
-                    $mem[] = $slot;
-                }
-                return $mem;
-            }, []);
+                //Skill order
+                $leveled = [];
+                $part['skillOrder'] = collect($events[$pId]['SKILL_LEVEL_UP'])->reduce(function($mem, $e) use($maxLevelSkills, &$leveled){
+                    $slot = $e['skillSlot'] - 1;
+                    @$leveled[$slot]++;
+                    if($leveled[$slot] == $maxLevelSkills[$slot]-1){
+                        $mem[] = $slot;
+                    }
+                    return $mem;
+                }, []);
+            }
 
             //Teams
             $part['team'] = $teams[$teamId];
@@ -504,5 +528,9 @@ class CrawlerLaunch extends Command
         }
 
         return $participants;
+    }
+
+    protected function percent ($v){
+        return round($v * 100, 2);
     }
 }

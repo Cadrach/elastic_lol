@@ -46,10 +46,9 @@ class Participants extends Component {
             return <div>
 
                 <List>
-                {participants.value.hits.hits.map((hit,index) => {
-                    var participant = hit.inner_hits.participants.hits.hits[0]._source;
+                {participants.value.hits.hits.map((participant,index) => {
                     return <ListItem button key={index}>
-                        <Participant participant={participant} items={items.value} champions={champions.value}/>
+                        <Participant participant={participant._source} items={items.value} champions={champions.value}/>
                     </ListItem>
                 })}
                 </List>
