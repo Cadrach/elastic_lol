@@ -37672,7 +37672,7 @@ var Participant = function (_Component) {
             var champion = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.props.champions.data, { id: p.championId });
             var version = this.props.champions.version;
             var img = 'http://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + champion.key + '.png';
-            var items = [p.item0, p.item1, p.item2, p.item3, p.item4, p.item6];
+            var items = p.itemBuildOrder;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -37689,6 +37689,11 @@ var Participant = function (_Component) {
                     p.deaths,
                     '/',
                     p.assists
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    null,
+                    p.identity.summonerName
                 )
             );
         }

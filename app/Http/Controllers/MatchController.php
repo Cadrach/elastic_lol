@@ -46,18 +46,13 @@ class MatchController extends Controller
             'index' => 'lol_participant',
             'type' => 'lol_participant',
             'body' => json_decode('{
-                "size": 20,
+                "size": 200,
                 "query": {
                 "bool": {
                   "must": [
                     {
                       "match": {
                         "championId": 56
-                      }
-                    },
-                    {
-                      "match": {
-                        "highestAchievedSeasonTier": "PLATINUM"
                       }
                     }
                   ]

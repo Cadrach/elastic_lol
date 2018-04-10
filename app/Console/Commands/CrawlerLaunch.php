@@ -421,6 +421,9 @@ class CrawlerLaunch extends Command
             }
         }
 
+        //Prepare identities
+        $identities = collect($match['participantIdentities'])->pluck('player', 'participantId');
+
         //Teams stats
         $teams = collect(collect($match['participants'])->groupBy('teamId')->reduce(function($mem, $parts){
             foreach($parts as $part){
@@ -490,6 +493,9 @@ class CrawlerLaunch extends Command
             $part['seasonId'] = $match['seasonId'];
             $part['gameMode'] = $match['gameMode'];
             $part['gameType'] = $match['gameType'];
+
+            //Identity
+            $part['identity'] = $identities[$pId];
 
             //Versus & With
             $part['playVersus'] = collect($match['participants'])->filter(function($p) use ($teamId){return $teamId != $p['teamId'];})->pluck('championId');
