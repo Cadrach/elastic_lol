@@ -506,23 +506,27 @@ class CrawlerLaunch extends Command
                 $part['events'] =  $events[$pId];
 
                 //Completed items (build order)
-                $part['itemBuildOrder'] = collect($events[$pId]['ITEM_PURCHASED'])->reduce(function($mem, $e) use($completeItems){
-                    if($completeItems->contains($e['itemId'])){
-                        $mem[] = $e['itemId'];
-                    }
-                    return $mem;
-                }, []);
+                if(isset($events[$pId]['ITEM_PURCHASED'])) {
+                    $part['itemBuildOrder'] = collect($events[$pId]['ITEM_PURCHASED'])->reduce(function ($mem, $e) use ($completeItems) {
+                        if ($completeItems->contains($e['itemId'])) {
+                            $mem[] = $e['itemId'];
+                        }
+                        return $mem;
+                    }, []);
+                }
 
                 //Skill order
-                $leveled = [];
-                $part['skillOrder'] = collect($events[$pId]['SKILL_LEVEL_UP'])->reduce(function($mem, $e) use($maxLevelSkills, &$leveled){
-                    $slot = $e['skillSlot'] - 1;
-                    @$leveled[$slot]++;
-                    if($leveled[$slot] == $maxLevelSkills[$slot]-1){
-                        $mem[] = $slot;
-                    }
-                    return $mem;
-                }, []);
+                if(isset($events[$pId]['SKILL_LEVEL_UP'])){
+                    $leveled = [];
+                    $part['skillOrder'] = collect($events[$pId]['SKILL_LEVEL_UP'])->reduce(function($mem, $e) use($maxLevelSkills, &$leveled){
+                        $slot = $e['skillSlot'] - 1;
+                        @$leveled[$slot]++;
+                        if($leveled[$slot] == $maxLevelSkills[$slot]-1){
+                            $mem[] = $slot;
+                        }
+                        return $mem;
+                    }, []);
+                }
             }
 
             //Teams
