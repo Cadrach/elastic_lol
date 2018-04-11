@@ -37637,8 +37637,8 @@ module.exports = flatRest;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Item__ = __webpack_require__(393);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_material_ui_Avatar__ = __webpack_require__(219);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_material_ui_Avatar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_material_ui_Avatar__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_Icon__ = __webpack_require__(559);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_Icon___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_material_ui_Icon__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid__ = __webpack_require__(539);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_material_ui_Grid__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37670,24 +37670,36 @@ var Participant = function (_Component) {
         value: function render() {
             var _this2 = this;
 
+            var perkUrl = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/';
+
             var p = this.props.participant;
             var champion = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.props.champions.data, { id: p.championId });
             var version = this.props.champions.version;
-            var img = 'http://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + champion.key + '.png';
+            var imgChampion = 'http://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + champion.key + '.png';
+            var imgTier = 'img/tier/' + p.highestAchievedSeasonTier.toLowerCase() + '.png';
             var items = p.itemBuildOrder ? p.itemBuildOrder : [];
+
+            // var perk1 = perkUrl +
+
             var purchaseEvents = p.events && p.events.ITEM_PURCHASED ? p.events.ITEM_PURCHASED : [];
             var prevTime = null;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_Avatar___default.a, { src: img, size: 64, style: { float: 'left' } }),
-                '\xA0',
-                Object.keys(items).map(function (key) {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Item__["a" /* default */], { key: key, itemId: items[key], items: _this2.props.items });
-                }),
+                __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+                { container: true },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'span',
-                    null,
+                    __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+                    { item: true, xs: 4 },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: imgTier, style: { width: '32px', float: 'left' } }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_Avatar___default.a, { src: imgChampion, style: { float: 'left' } }),
+                    '\xA0',
+                    Object.keys(items).map(function (key) {
+                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Item__["a" /* default */], { key: key, itemId: items[key], items: _this2.props.items });
+                    })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+                    { item: true, xs: 1 },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: 'http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/score.png' }),
                     p.kills,
                     '/',
                     p.deaths,
@@ -37695,32 +37707,32 @@ var Participant = function (_Component) {
                     p.assists
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'span',
-                    null,
+                    __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+                    { item: true, xs: 1 },
                     p.identity.summonerName
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'span',
-                    null,
+                    __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+                    { item: true, xs: 1 },
                     p.enemyTeam.damageType
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'span',
-                    null,
+                    __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+                    { item: true, xs: 1 },
                     p.win ? 'WIN' : 'LOSE'
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', null),
-                purchaseEvents.map(function (event, index) {
-                    var showArrow = prevTime != null && prevTime + 10000 < event['timestamp'];
-                    prevTime = event['timestamp'];
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'span',
-                        { key: index },
-                        showArrow && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-2x fa-angle-double-right', style: { float: 'left' } }),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Item__["a" /* default */], { itemId: event.itemId, items: _this2.props.items })
-                    );
-                })
+                )
             );
+
+            // {purchaseEvents.map((event, index) => {
+            //     const showArrow = prevTime != null && (prevTime + 10000)<event['timestamp'];
+            //     prevTime = event['timestamp'];
+            //     return (
+            //         <span key={index}>
+            //                     {showArrow && <i className="fas fa-2x fa-angle-double-right" style={{float: 'left'}}></i>}
+            //             <Item itemId={event.itemId} items={this.props.items}/>
+            //                 </span>
+            //     )
+            // })}
         }
     }]);
 
@@ -81258,146 +81270,6 @@ var Participants = function (_Component) {
         participants: 'api/match/participants'
     };
 })(Participants));
-
-/***/ }),
-/* 559 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _Icon = __webpack_require__(560);
-
-Object.defineProperty(exports, 'default', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_Icon).default;
-  }
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ }),
-/* 560 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.styles = undefined;
-
-var _extends2 = __webpack_require__(2);
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _defineProperty2 = __webpack_require__(7);
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _objectWithoutProperties2 = __webpack_require__(3);
-
-var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(1);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _classnames = __webpack_require__(5);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _withStyles = __webpack_require__(6);
-
-var _withStyles2 = _interopRequireDefault(_withStyles);
-
-var _helpers = __webpack_require__(128);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var styles = exports.styles = function styles(theme) {
-  return {
-    root: {
-      userSelect: 'none',
-      fontSize: 24,
-      width: '1em',
-      height: '1em',
-      // Chrome fix for https://bugs.chromium.org/p/chromium/issues/detail?id=820541
-      // To remove at some point.
-      overflow: 'hidden'
-    },
-    colorPrimary: {
-      color: theme.palette.primary.main
-    },
-    colorSecondary: {
-      color: theme.palette.secondary.main
-    },
-    colorAction: {
-      color: theme.palette.action.active
-    },
-    colorDisabled: {
-      color: theme.palette.action.disabled
-    },
-    colorError: {
-      color: theme.palette.error.main
-    }
-  };
-};
-
-function Icon(props) {
-  var children = props.children,
-      classes = props.classes,
-      className = props.className,
-      color = props.color,
-      other = (0, _objectWithoutProperties3.default)(props, ['children', 'classes', 'className', 'color']);
-
-
-  return _react2.default.createElement(
-    'span',
-    (0, _extends3.default)({
-      className: (0, _classnames2.default)('material-icons', classes.root, (0, _defineProperty3.default)({}, classes['color' + (0, _helpers.capitalize)(color)], color !== 'inherit'), className),
-      'aria-hidden': 'true'
-    }, other),
-    children
-  );
-}
-
-Icon.propTypes =  true ? {
-  /**
-   * The name of the icon font ligature.
-   */
-  children: _propTypes2.default.node,
-  /**
-   * Useful to extend the style applied to components.
-   */
-  classes: _propTypes2.default.object.isRequired,
-  /**
-   * @ignore
-   */
-  className: _propTypes2.default.string,
-  /**
-   * The color of the component. It supports those theme colors that make sense for this component.
-   */
-  color: _propTypes2.default.oneOf(['inherit', 'secondary', 'action', 'disabled', 'error', 'primary'])
-} : {};
-
-Icon.defaultProps = {
-  color: 'inherit'
-};
-
-Icon.muiName = 'Icon';
-
-exports.default = (0, _withStyles2.default)(styles, { name: 'MuiIcon' })(Icon);
 
 /***/ })
 /******/ ]);

@@ -42,19 +42,26 @@ class MatchController extends Controller
 
         $client = ElasticSearchClient::get();
 
+        $params = json_decode('{
+            "size": 20,
+            "query": {
+                "bool": {
+                    "must": [
+                        {"match": {"championId": 56}},
+                        {"match": {"win": true}}
+                    ]
+                }
+            }
+        }');
+
+        if(json_last_error()){
+            throw new \Exception('JSON SYNTAX ERROR: ' . json_last_error_msg());
+        }
+
         return $client->search([
             'index' => 'lol_participant',
             'type' => 'lol_participant',
-            'body' => json_decode('{
-                "size": 200,
-                "query": {
-                    "bool": {
-                      "must": [
-                        {"match": {"championId": 56}}
-                      ]
-                    }
-                }
-            }')
+            'body' => $params
         ]);
     }
 }

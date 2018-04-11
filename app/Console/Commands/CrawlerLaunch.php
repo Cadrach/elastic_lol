@@ -427,37 +427,39 @@ class CrawlerLaunch extends Command
 
         //Prepare timeline per participant
         $events = [];
-        foreach($timeline['frames'] as $frame){
-            $ts = $frame['timestamp'];
-            foreach($frame['events'] as $event){
-                if(isset($event['participantId'])){
-                    $event['timestamp']+= $ts;
-                    $pId = $event['participantId'];
-                    $type = $event['type'];
+        if(count($timeline['frames'])>0){
+            foreach($timeline['frames'] as $frame){
+                $ts = $frame['timestamp'];
+                foreach($frame['events'] as $event){
+                    if(isset($event['participantId'])){
+                        $event['timestamp']+= $ts;
+                        $pId = $event['participantId'];
+                        $type = $event['type'];
 
-                    unset($event['participantId']);
-                    unset($event['type']);
+                        unset($event['participantId']);
+                        unset($event['type']);
 
-                    $events[$pId][$type][] = $event;
+                        $events[$pId][$type][] = $event;
 
-                    //Special case of undo: remove previous action of ITEM_SOLD or ITEM_PURCHASED
-                    if($type == 'ITEM_UNDO'){
-                        if($event['afterId']>0 && $event['beforeId'] == 0) $toRemove = 'ITEM_SOLD';
-                        else if($event['afterId'] == 0 && $event['beforeId'] > 0) $toRemove = 'ITEM_PURCHASED';
-                        else throw new \Exception('Do not know how to manage this case');
+                        //Special case of undo: remove previous action of ITEM_SOLD or ITEM_PURCHASED
+                        if($type == 'ITEM_UNDO'){
+                            if($event['afterId']>0 && $event['beforeId'] == 0) $toRemove = 'ITEM_SOLD';
+                            else if($event['afterId'] == 0 && $event['beforeId'] > 0) $toRemove = 'ITEM_PURCHASED';
+                            else throw new \Exception('Do not know how to manage this case');
 
-                        if(!isset($events[$pId][$toRemove])){
-                            //Ugly but sometimes data seems to be stored wrongly for UNDO
-                            $toRemove = $toRemove == 'ITEM_PURCHASED' ? 'ITEM_SOLD':'ITEM_PURCHASED';
+                            if(!isset($events[$pId][$toRemove])){
+                                //Ugly but sometimes data seems to be stored wrongly for UNDO
+                                $toRemove = $toRemove == 'ITEM_PURCHASED' ? 'ITEM_SOLD':'ITEM_PURCHASED';
+                            }
+
+                            //Remove event
+                            $removed = array_pop($events[$pId][$toRemove]);
+
+                            //print_r(['rem' => $removed, 'undo' => $event, 'type'=>$toRemove]);
                         }
-
-                        //Remove event
-                        $removed = array_pop($events[$pId][$toRemove]);
-
-                        //print_r(['rem' => $removed, 'undo' => $event, 'type'=>$toRemove]);
                     }
-                }
 
+                }
             }
         }
 
