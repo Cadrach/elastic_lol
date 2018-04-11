@@ -19,8 +19,8 @@ export default class Participant extends Component {
         return (
             <div>
                 <Avatar src={img} size={64} style={{float: 'left'}}/>&nbsp;
-                {items.map((item, index) => (
-                    <Item key={index} itemId={item} items={this.props.items}/>
+                {Object.keys(items).map(key => (
+                    <Item key={key} itemId={items[key]} items={this.props.items}/>
                 ))}
                 <span>{p.kills}/{p.deaths}/{p.assists}</span>
                 <span>{p.identity.summonerName}</span>

@@ -77,6 +77,10 @@ class CrawlerLaunch extends Command
      */
     protected $maxLevelSkills;
 
+    protected $bulkBody = [];
+
+    protected $bulkCount = 0;
+
     /**
      * Create a new command instance.
      *
@@ -260,7 +264,8 @@ class CrawlerLaunch extends Command
 
     /**
      * @param $accountId
-     * @return \Illuminate\Support\Collection
+     * @return Collection
+     * @throws \Exception
      */
     public function storeMatchesDetails($accountId){
 
@@ -329,18 +334,7 @@ class CrawlerLaunch extends Command
                     $bulkBody[] = $p;
                 }
 
-                //
-                $elastic->bulk([
-                    'body' => $bulkBody
-                ]);
-
-                $info = $elastic->transport->getLastConnection()->getLastRequestInfo();
-
-                $responses = json_decode($info['response']['body'], true);
-
-                if($responses['errors']>0){
-                    throw new \Exception("\nError saving to ElasticSearch:\n" . print_r($responses, true));
-                }
+                $this->bulkSave($bulkBody);
 
                 //Increment creation counter
                 $this->created++;
@@ -356,6 +350,44 @@ class CrawlerLaunch extends Command
         return $matchesDetails;
     }
 
+    public function bulkSave($bulk){
+
+        $bulkSize = 100;
+
+        foreach($bulk as $b){
+            $this->bulkBody[] = $b;
+        }
+        $this->bulkCount++;
+
+        if($this->bulkCount >= $bulkSize){
+            $elastic = ElasticSearchClient::get();
+
+            //
+            $elastic->bulk([
+                'body' => $this->bulkBody
+            ]);
+
+            $info = $elastic->transport->getLastConnection()->getLastRequestInfo();
+
+            $responses = json_decode($info['response']['body'], true);
+
+            if($responses['errors']>0){
+                throw new \Exception("\nError saving to ElasticSearch:\n" . print_r($responses, true));
+            }
+
+            $this->line("Inserted $bulkSize matches, took {$responses['took']}");
+
+            $this->bulkBody = [];
+            $this->bulkCount = 0;
+        }
+
+    }
+
+    /**
+     * Returns list of matches for an account id
+     * @param $accountId
+     * @return Collection|static
+     */
     public function getMatches($accountId){
         $beginIndex = 0;
         $matches = collect([]);

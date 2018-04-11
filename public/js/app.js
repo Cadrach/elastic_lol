@@ -37682,8 +37682,8 @@ var Participant = function (_Component) {
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_Avatar___default.a, { src: img, size: 64, style: { float: 'left' } }),
                 '\xA0',
-                items.map(function (item, index) {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Item__["a" /* default */], { key: index, itemId: item, items: _this2.props.items });
+                Object.keys(items).map(function (key) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Item__["a" /* default */], { key: key, itemId: items[key], items: _this2.props.items });
                 }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'span',

@@ -29,3 +29,5 @@ ad damage enemy team
 
 enemy team damage type (mixed, ap, ad)
 
+## Optimize
+Save bulk every 100 match
