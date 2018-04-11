@@ -1,5 +1,9 @@
 {
   "lol_participant": {
+    "settings" : {
+      "number_of_shards": 5,
+      "number_of_replicas": 1
+    },
     "mappings": {
       "lol_participant": {
         "properties": {
@@ -10,7 +14,7 @@
             "type": "long"
           },
           "championId": {
-            "type": "long"
+            "type": "keyword"
           },
           "combatPlayerScore": {
             "type": "long"
@@ -27,19 +31,16 @@
           "deaths": {
             "type": "long"
           },
+          "damageType": {
+            "type": "keyword"
+          },
           "doubleKills": {
             "type": "long"
           },
           "enemyTeam": {
             "properties": {
               "damageType": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
+                "type": "keyword"
               },
               "magicDamageDealt": {
                 "type": "long"
@@ -256,10 +257,10 @@
           "identity": {
             "properties": {
               "accountId": {
-                "type": "long"
+                "type": "keyword"
               },
               "currentAccountId": {
-                "type": "long"
+                "type": "keyword"
               },
               "currentPlatformId": {
                 "type": "text",
@@ -289,10 +290,10 @@
                 }
               },
               "profileIcon": {
-                "type": "long"
+                "type": "keyword"
               },
               "summonerId": {
-                "type": "long"
+                "type": "keyword"
               },
               "summonerName": {
                 "type": "text",
@@ -375,7 +376,7 @@
             "type": "long"
           },
           "participantId": {
-            "type": "long"
+            "type": "keyword"
           },
           "patchVersion": {
             "type": "float"
@@ -383,83 +384,92 @@
           "pentaKills": {
             "type": "long"
           },
+          "percentMagicDamageDealtToChampions": {
+            "type": "float"
+          },
+          "percentPhysicalDamageDealtToChampions": {
+            "type": "float"
+          },
+          "percentTrueDamageDealtToChampions": {
+            "type": "float"
+          },
           "perk0": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk0Var1": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk0Var2": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk0Var3": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk1": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk1Var1": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk1Var2": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk1Var3": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk2": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk2Var1": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk2Var2": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk2Var3": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk3": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk3Var1": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk3Var2": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk3Var3": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk4": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk4Var1": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk4Var2": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk4Var3": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk5": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk5Var1": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk5Var2": {
-            "type": "long"
+            "type": "keyword"
           },
           "perk5Var3": {
-            "type": "long"
+            "type": "keyword"
           },
           "perkPrimaryStyle": {
-            "type": "long"
+            "type": "keyword"
           },
           "perkSubStyle": {
-            "type": "long"
+            "type": "keyword"
           },
           "physicalDamageDealt": {
             "type": "long"
@@ -519,10 +529,10 @@
             "type": "long"
           },
           "queueId": {
-            "type": "long"
+            "type": "keyword"
           },
           "seasonId": {
-            "type": "long"
+            "type": "keyword"
           },
           "sightWardsBoughtInGame": {
             "type": "long"
@@ -531,21 +541,15 @@
             "type": "long"
           },
           "spell1Id": {
-            "type": "long"
+            "type": "keyword"
           },
           "spell2Id": {
-            "type": "long"
+            "type": "keyword"
           },
           "team": {
             "properties": {
               "damageType": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
+                "type": "keyword"
               },
               "magicDamageDealt": {
                 "type": "long"
@@ -625,7 +629,7 @@
             }
           },
           "teamId": {
-            "type": "long"
+            "type": "keyword"
           },
           "timeCCingOthers": {
             "type": "long"
