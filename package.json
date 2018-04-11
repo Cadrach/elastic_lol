@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "material-ui": "^1.0.0-beta.40",
+        "react-redux": "^5.0.7",
         "react-refetch": "^1.0.4"
     }
 }
