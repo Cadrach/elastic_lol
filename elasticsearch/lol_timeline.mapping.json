@@ -1,0 +1,535 @@
+{
+  "lol_timeline": {
+    "mappings": {
+      "lol_timeline": {
+        "properties": {
+          "frameInterval": {
+            "type": "long"
+          },
+          "frames": {
+            "properties": {
+              "events": {
+                "properties": {
+                  "afterId": {
+                    "type": "long"
+                  },
+                  "assistingParticipantIds": {
+                    "type": "long"
+                  },
+                  "beforeId": {
+                    "type": "long"
+                  },
+                  "buildingType": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "creatorId": {
+                    "type": "long"
+                  },
+                  "itemId": {
+                    "type": "long"
+                  },
+                  "killerId": {
+                    "type": "long"
+                  },
+                  "laneType": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "levelUpType": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "participantId": {
+                    "type": "long"
+                  },
+                  "position": {
+                    "properties": {
+                      "x": {
+                        "type": "long"
+                      },
+                      "y": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "skillSlot": {
+                    "type": "long"
+                  },
+                  "teamId": {
+                    "type": "long"
+                  },
+                  "timestamp": {
+                    "type": "long"
+                  },
+                  "towerType": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "type": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "victimId": {
+                    "type": "long"
+                  },
+                  "wardType": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  }
+                }
+              },
+              "participantFrames": {
+                "properties": {
+                  "1": {
+                    "properties": {
+                      "currentGold": {
+                        "type": "long"
+                      },
+                      "dominionScore": {
+                        "type": "long"
+                      },
+                      "jungleMinionsKilled": {
+                        "type": "long"
+                      },
+                      "level": {
+                        "type": "long"
+                      },
+                      "minionsKilled": {
+                        "type": "long"
+                      },
+                      "participantId": {
+                        "type": "long"
+                      },
+                      "position": {
+                        "properties": {
+                          "x": {
+                            "type": "long"
+                          },
+                          "y": {
+                            "type": "long"
+                          }
+                        }
+                      },
+                      "teamScore": {
+                        "type": "long"
+                      },
+                      "totalGold": {
+                        "type": "long"
+                      },
+                      "xp": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "2": {
+                    "properties": {
+                      "currentGold": {
+                        "type": "long"
+                      },
+                      "dominionScore": {
+                        "type": "long"
+                      },
+                      "jungleMinionsKilled": {
+                        "type": "long"
+                      },
+                      "level": {
+                        "type": "long"
+                      },
+                      "minionsKilled": {
+                        "type": "long"
+                      },
+                      "participantId": {
+                        "type": "long"
+                      },
+                      "position": {
+                        "properties": {
+                          "x": {
+                            "type": "long"
+                          },
+                          "y": {
+                            "type": "long"
+                          }
+                        }
+                      },
+                      "teamScore": {
+                        "type": "long"
+                      },
+                      "totalGold": {
+                        "type": "long"
+                      },
+                      "xp": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "3": {
+                    "properties": {
+                      "currentGold": {
+                        "type": "long"
+                      },
+                      "dominionScore": {
+                        "type": "long"
+                      },
+                      "jungleMinionsKilled": {
+                        "type": "long"
+                      },
+                      "level": {
+                        "type": "long"
+                      },
+                      "minionsKilled": {
+                        "type": "long"
+                      },
+                      "participantId": {
+                        "type": "long"
+                      },
+                      "position": {
+                        "properties": {
+                          "x": {
+                            "type": "long"
+                          },
+                          "y": {
+                            "type": "long"
+                          }
+                        }
+                      },
+                      "teamScore": {
+                        "type": "long"
+                      },
+                      "totalGold": {
+                        "type": "long"
+                      },
+                      "xp": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "4": {
+                    "properties": {
+                      "currentGold": {
+                        "type": "long"
+                      },
+                      "dominionScore": {
+                        "type": "long"
+                      },
+                      "jungleMinionsKilled": {
+                        "type": "long"
+                      },
+                      "level": {
+                        "type": "long"
+                      },
+                      "minionsKilled": {
+                        "type": "long"
+                      },
+                      "participantId": {
+                        "type": "long"
+                      },
+                      "position": {
+                        "properties": {
+                          "x": {
+                            "type": "long"
+                          },
+                          "y": {
+                            "type": "long"
+                          }
+                        }
+                      },
+                      "teamScore": {
+                        "type": "long"
+                      },
+                      "totalGold": {
+                        "type": "long"
+                      },
+                      "xp": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "5": {
+                    "properties": {
+                      "currentGold": {
+                        "type": "long"
+                      },
+                      "dominionScore": {
+                        "type": "long"
+                      },
+                      "jungleMinionsKilled": {
+                        "type": "long"
+                      },
+                      "level": {
+                        "type": "long"
+                      },
+                      "minionsKilled": {
+                        "type": "long"
+                      },
+                      "participantId": {
+                        "type": "long"
+                      },
+                      "position": {
+                        "properties": {
+                          "x": {
+                            "type": "long"
+                          },
+                          "y": {
+                            "type": "long"
+                          }
+                        }
+                      },
+                      "teamScore": {
+                        "type": "long"
+                      },
+                      "totalGold": {
+                        "type": "long"
+                      },
+                      "xp": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "6": {
+                    "properties": {
+                      "currentGold": {
+                        "type": "long"
+                      },
+                      "dominionScore": {
+                        "type": "long"
+                      },
+                      "jungleMinionsKilled": {
+                        "type": "long"
+                      },
+                      "level": {
+                        "type": "long"
+                      },
+                      "minionsKilled": {
+                        "type": "long"
+                      },
+                      "participantId": {
+                        "type": "long"
+                      },
+                      "position": {
+                        "properties": {
+                          "x": {
+                            "type": "long"
+                          },
+                          "y": {
+                            "type": "long"
+                          }
+                        }
+                      },
+                      "teamScore": {
+                        "type": "long"
+                      },
+                      "totalGold": {
+                        "type": "long"
+                      },
+                      "xp": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "7": {
+                    "properties": {
+                      "currentGold": {
+                        "type": "long"
+                      },
+                      "dominionScore": {
+                        "type": "long"
+                      },
+                      "jungleMinionsKilled": {
+                        "type": "long"
+                      },
+                      "level": {
+                        "type": "long"
+                      },
+                      "minionsKilled": {
+                        "type": "long"
+                      },
+                      "participantId": {
+                        "type": "long"
+                      },
+                      "position": {
+                        "properties": {
+                          "x": {
+                            "type": "long"
+                          },
+                          "y": {
+                            "type": "long"
+                          }
+                        }
+                      },
+                      "teamScore": {
+                        "type": "long"
+                      },
+                      "totalGold": {
+                        "type": "long"
+                      },
+                      "xp": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "8": {
+                    "properties": {
+                      "currentGold": {
+                        "type": "long"
+                      },
+                      "dominionScore": {
+                        "type": "long"
+                      },
+                      "jungleMinionsKilled": {
+                        "type": "long"
+                      },
+                      "level": {
+                        "type": "long"
+                      },
+                      "minionsKilled": {
+                        "type": "long"
+                      },
+                      "participantId": {
+                        "type": "long"
+                      },
+                      "position": {
+                        "properties": {
+                          "x": {
+                            "type": "long"
+                          },
+                          "y": {
+                            "type": "long"
+                          }
+                        }
+                      },
+                      "teamScore": {
+                        "type": "long"
+                      },
+                      "totalGold": {
+                        "type": "long"
+                      },
+                      "xp": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "9": {
+                    "properties": {
+                      "currentGold": {
+                        "type": "long"
+                      },
+                      "dominionScore": {
+                        "type": "long"
+                      },
+                      "jungleMinionsKilled": {
+                        "type": "long"
+                      },
+                      "level": {
+                        "type": "long"
+                      },
+                      "minionsKilled": {
+                        "type": "long"
+                      },
+                      "participantId": {
+                        "type": "long"
+                      },
+                      "position": {
+                        "properties": {
+                          "x": {
+                            "type": "long"
+                          },
+                          "y": {
+                            "type": "long"
+                          }
+                        }
+                      },
+                      "teamScore": {
+                        "type": "long"
+                      },
+                      "totalGold": {
+                        "type": "long"
+                      },
+                      "xp": {
+                        "type": "long"
+                      }
+                    }
+                  },
+                  "10": {
+                    "properties": {
+                      "currentGold": {
+                        "type": "long"
+                      },
+                      "dominionScore": {
+                        "type": "long"
+                      },
+                      "jungleMinionsKilled": {
+                        "type": "long"
+                      },
+                      "level": {
+                        "type": "long"
+                      },
+                      "minionsKilled": {
+                        "type": "long"
+                      },
+                      "participantId": {
+                        "type": "long"
+                      },
+                      "position": {
+                        "properties": {
+                          "x": {
+                            "type": "long"
+                          },
+                          "y": {
+                            "type": "long"
+                          }
+                        }
+                      },
+                      "teamScore": {
+                        "type": "long"
+                      },
+                      "totalGold": {
+                        "type": "long"
+                      },
+                      "xp": {
+                        "type": "long"
+                      }
+                    }
+                  }
+                }
+              },
+              "timestamp": {
+                "type": "long"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

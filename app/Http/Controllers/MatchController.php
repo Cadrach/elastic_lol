@@ -40,8 +40,6 @@ class MatchController extends Controller
             return json_decode(file_get_contents(public_path('json/test-participants.json')), true);
         }
 
-        die(env('ELASTICSEARCH_HOST'));
-
         $client = ElasticSearchClient::get();
 
         return $client->search([
@@ -50,19 +48,13 @@ class MatchController extends Controller
             'body' => json_decode('{
                 "size": 200,
                 "query": {
-                "bool": {
-                  "must": [
-                    {
-                      "match": {
-                        "championId": 56
-                      }
+                    "bool": {
+                      "must": [
+                        {"match": {"championId": 56}}
+                      ]
                     }
-                  ]
-                }
                 }
             }')
         ]);
-
-        return json_decode(file_get_contents(public_path('json/test-participants.json')), true);
     }
 }

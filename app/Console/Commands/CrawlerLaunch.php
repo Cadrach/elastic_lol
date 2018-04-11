@@ -334,6 +334,14 @@ class CrawlerLaunch extends Command
                     'body' => $bulkBody
                 ]);
 
+                $info = $elastic->transport->getLastConnection()->getLastRequestInfo();
+
+                $responses = json_decode($info['response']['body'], true);
+
+                if($responses['errors']>0){
+                    throw new \Exception("\nError saving to ElasticSearch:\n" . print_r($responses, true));
+                }
+
                 //Increment creation counter
                 $this->created++;
             }
@@ -448,18 +456,18 @@ class CrawlerLaunch extends Command
 
             return $mem;
         }, []))->map(function($team){
-            $team['percentMagicDamageDealt'] = $this->percent($team['magicDamageDealt'] / $team['totalDamageDealt']);
-            $team['percentPhysicalDamageDealt'] = $this->percent($team['physicalDamageDealt'] / $team['totalDamageDealt']);
-            $team['percentTrueDamageDealt'] = $this->percent($team['trueDamageDealt'] / $team['totalDamageDealt']);
+            $team['percentMagicDamageDealt'] = $team['totalDamageDealt'] ? $this->percent($team['magicDamageDealt'] / $team['totalDamageDealt']):0;
+            $team['percentPhysicalDamageDealt'] = $team['totalDamageDealt'] ? $this->percent($team['physicalDamageDealt'] / $team['totalDamageDealt']):0;
+            $team['percentTrueDamageDealt'] = $team['totalDamageDealt'] ? $this->percent($team['trueDamageDealt'] / $team['totalDamageDealt']):0;
 
-            $team['percentMagicDamageDealtToChampions'] = $this->percent($team['magicDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
-            $team['percentPhysicalDamageDealtToChampions'] = $this->percent($team['physicalDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
-            $team['percentTrueDamageDealtToChampions'] = $this->percent($team['trueDamageDealtToChampions'] / $team['totalDamageDealtToChampions']);
+            $team['percentMagicDamageDealtToChampions'] = $team['totalDamageDealtToChampions'] ? $this->percent($team['magicDamageDealtToChampions'] / $team['totalDamageDealtToChampions']):0;
+            $team['percentPhysicalDamageDealtToChampions'] = $team['totalDamageDealtToChampions'] ? $this->percent($team['physicalDamageDealtToChampions'] / $team['totalDamageDealtToChampions']):0;
+            $team['percentTrueDamageDealtToChampions'] = $team['totalDamageDealtToChampions'] ? $this->percent($team['trueDamageDealtToChampions'] / $team['totalDamageDealtToChampions']):0;
 
-            $team['percentTotalHeal'] = $this->percent($team['totalHeal'] / $team['totalDamageTaken']);
-            $team['percentMagicalDamageTaken'] = $this->percent($team['magicalDamageTaken'] / $team['totalDamageTaken']);
-            $team['percentPhysicalDamageTaken'] = $this->percent($team['physicalDamageTaken'] / $team['totalDamageTaken']);
-            $team['percentTrueDamageTaken'] = $this->percent($team['trueDamageTaken'] / $team['totalDamageTaken']);
+            $team['percentTotalHeal'] = $team['totalDamageTaken'] ? $this->percent($team['totalHeal'] / $team['totalDamageTaken']):0;
+            $team['percentMagicalDamageTaken'] = $team['totalDamageTaken'] ? $this->percent($team['magicalDamageTaken'] / $team['totalDamageTaken']):0;
+            $team['percentPhysicalDamageTaken'] = $team['totalDamageTaken'] ? $this->percent($team['physicalDamageTaken'] / $team['totalDamageTaken']):0;
+            $team['percentTrueDamageTaken'] = $team['totalDamageTaken'] ? $this->percent($team['trueDamageTaken'] / $team['totalDamageTaken']):0;
 
             $team['damageType'] = 'MIXED';
             if($team['percentMagicDamageDealtToChampions']>60){$team['damageType'] = 'AP';}
@@ -502,6 +510,9 @@ class CrawlerLaunch extends Command
             $part['playWith'] = collect($match['participants'])->filter(function($p) use ($teamId, $pId){return $teamId == $p['teamId'] && $p['participantId'] != $pId;})->pluck('championId');
 
             //Events
+            $part['events'] = [];
+            $part['itemBuildOrder'] = [];
+            $part['skillOrder'] = [];
             if(isset($events[$pId])){
                 $part['events'] =  $events[$pId];
 
@@ -509,7 +520,7 @@ class CrawlerLaunch extends Command
                 if(isset($events[$pId]['ITEM_PURCHASED'])) {
                     $part['itemBuildOrder'] = collect($events[$pId]['ITEM_PURCHASED'])->reduce(function ($mem, $e) use ($completeItems) {
                         if ($completeItems->contains($e['itemId'])) {
-                            $mem[] = $e['itemId'];
+                            $mem['item' . count($mem)] = $e['itemId'];
                         }
                         return $mem;
                     }, []);
@@ -522,7 +533,7 @@ class CrawlerLaunch extends Command
                         $slot = $e['skillSlot'] - 1;
                         @$leveled[$slot]++;
                         if($leveled[$slot] == $maxLevelSkills[$slot]-1){
-                            $mem[] = $slot;
+                            $mem['skill' . count($mem)] = $slot;
                         }
                         return $mem;
                     }, []);
@@ -533,6 +544,16 @@ class CrawlerLaunch extends Command
             $part['team'] = $teams[$teamId];
             $part['enemyTeam'] = $teams[$teamIdEnemy];
 
+            //Damage dealt
+            $part['percentMagicDamageDealtToChampions'] = $part['totalDamageDealtToChampions'] ? $this->percent($part['magicDamageDealtToChampions'] / $part['totalDamageDealtToChampions']):0;
+            $part['percentPhysicalDamageDealtToChampions'] = $part['totalDamageDealtToChampions'] ? $this->percent($part['physicalDamageDealtToChampions'] / $part['totalDamageDealtToChampions']):0;
+            $part['percentTrueDamageDealtToChampions'] = $part['totalDamageDealtToChampions'] ? $this->percent($part['trueDamageDealtToChampions'] / $part['totalDamageDealtToChampions']):0;
+            
+            //Damage type
+            $part['damageType'] = 'MIXED';
+            if($part['percentMagicDamageDealtToChampions']>60){$part['damageType'] = 'AP';}
+            if($part['percentPhysicalDamageDealtToChampions']>60){$part['damageType'] = 'AD';}
+            
             //
             $participants[] = $part;
         }

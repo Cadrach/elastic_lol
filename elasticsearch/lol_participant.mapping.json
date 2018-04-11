@@ -331,7 +331,19 @@
             "type": "long"
           },
           "itemBuildOrder": {
-            "type": "object"
+            "properties": {
+              "item0": {"type": "keyword"},
+              "item1": {"type": "keyword"},
+              "item2": {"type": "keyword"},
+              "item3": {"type": "keyword"},
+              "item4": {"type": "keyword"},
+              "item5": {"type": "keyword"},
+              "item6": {"type": "keyword"},
+              "item7": {"type": "keyword"},
+              "item8": {"type": "keyword"},
+              "item9": {"type": "keyword"},
+              "item10": {"type": "keyword"}
+            }
           },
           "killingSprees": {
             "type": "long"
@@ -538,7 +550,12 @@
             "type": "long"
           },
           "skillOrder": {
-            "type": "long"
+            "properties": {
+              "skill0": {"type": "keyword"},
+              "skill1": {"type": "keyword"},
+              "skill2": {"type": "keyword"},
+              "skill3": {"type": "keyword"}
+            }
           },
           "spell1Id": {
             "type": "keyword"

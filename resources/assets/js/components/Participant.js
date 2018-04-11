@@ -13,8 +13,8 @@ export default class Participant extends Component {
         var champion = _.find(this.props.champions.data, {id: p.championId});
         var version = this.props.champions.version;
         var img = 'http://ddragon.leagueoflegends.com/cdn/'+version+'/img/champion/'+champion.key+'.png';
-        var items = p.itemBuildOrder;
-        var purchaseEvents = p.events.ITEM_PURCHASED ? p.events.ITEM_PURCHASED:[];
+        var items = p.itemBuildOrder ? p.itemBuildOrder:[];
+        var purchaseEvents = p.events && p.events.ITEM_PURCHASED ? p.events.ITEM_PURCHASED:[];
         var prevTime = null;
         return (
             <div>
@@ -25,6 +25,7 @@ export default class Participant extends Component {
                 <span>{p.kills}/{p.deaths}/{p.assists}</span>
                 <span>{p.identity.summonerName}</span>
                 <span>{p.enemyTeam.damageType}</span>
+                <span>{p.win ? 'WIN':'LOSE'}</span>
                 <hr/>
 
                 {purchaseEvents.map((event, index) => {
