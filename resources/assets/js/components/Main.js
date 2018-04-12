@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import rootReducer from '../reducers'
+import { store } from '../store'
 
 // import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Matches from './Matches';
 import Participants from './Participants';
 import LoadDictionnaries from '../containers/loadDictionnaries'
 
 import CssBaseline from 'material-ui/CssBaseline';
-
-const store = createStore(rootReducer)
 
 /* An example React component */
 class Main extends Component {
