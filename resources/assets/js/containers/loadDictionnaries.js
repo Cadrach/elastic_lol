@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addDictionnaries } from '../actions'
+import { loadDictionnaries } from '../actions'
 
 const LoadDictionnaries = ({ dispatch }) => {
     console.log('LOADED DIC')
-    dispatch(addDictionnaries({runes: 'TEST'}));
+    dispatch(loadDictionnaries({runes: 'TEST'}));
     return null;
 }
 

@@ -63,5 +63,5 @@ class Participants extends Component {
 export default connect(props => ({
     items: 'json/items.json',
     champions: 'json/champions.json',
-    participants: 'api/match/participants'
+    participants: 'api/match/participants_'
 }))(Participants)
