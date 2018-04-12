@@ -35,6 +35,16 @@ class MatchController extends Controller
         ]);
     }
 
+    public function dictionnaries(){
+        $champions = json_decode(file_get_contents(public_path('json/champions.json')), true);
+        return [
+            'version' => $champions['version'],
+            'items' => json_decode(file_get_contents(public_path('json/items.json')), true)['data'],
+            'champions' => $champions['data'],
+            'runes' => json_decode(file_get_contents(public_path('json/runes.json')), true),
+        ];
+    }
+
     public function participants(){
         if( ! env('ELASTICSEARCH_HOST')) {
             return json_decode(file_get_contents(public_path('json/test-participants.json')), true);

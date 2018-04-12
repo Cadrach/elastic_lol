@@ -40,15 +40,15 @@ class Participants extends Component {
     // }
 
     render() {
-        const { items, participants, champions } = this.props
+        const { participants } = this.props
 
-        if (items.fulfilled && participants.fulfilled && champions.fulfilled) {
+        if (participants.fulfilled) {
             return <div>
 
                 <List>
                 {participants.value.hits.hits.map((participant,index) => {
                     return <ListItem button key={index}>
-                        <Participant participant={participant._source} items={items.value} champions={champions.value}/>
+                        <Participant participant={participant._source}/>
                     </ListItem>
                 })}
                 </List>
@@ -61,7 +61,5 @@ class Participants extends Component {
 
 
 export default connect(props => ({
-    items: 'json/items.json',
-    champions: 'json/champions.json',
-    participants: 'api/match/participants_'
+    participants: 'api/match/participants'
 }))(Participants)

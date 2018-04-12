@@ -21878,8 +21878,7 @@ module.exports = baseGet;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Item__ = __webpack_require__(431);
@@ -21887,14 +21886,6 @@ module.exports = baseGet;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_material_ui_Avatar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_material_ui_Avatar__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid__ = __webpack_require__(232);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_material_ui_Grid__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 
 
 
@@ -21904,90 +21895,76 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var Participant = function (_Component) {
-    _inherits(Participant, _Component);
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        dictionnaries: state.dictionnaries
+    };
+};
 
-    function Participant() {
-        _classCallCheck(this, Participant);
+var Participant = function Participant(_ref) {
+    var dictionnaries = _ref.dictionnaries,
+        participant = _ref.participant;
 
-        return _possibleConstructorReturn(this, (Participant.__proto__ || Object.getPrototypeOf(Participant)).apply(this, arguments));
-    }
+    var perkUrl = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/';
 
-    _createClass(Participant, [{
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
+    var p = participant;
+    var champion = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(dictionnaries.champions, { id: p.championId });
+    var version = dictionnaries.version;
+    var imgChampion = 'http://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + champion.key + '.png';
+    var imgTier = 'img/tier/' + p.highestAchievedSeasonTier.toLowerCase() + '.png';
+    var items = p.itemBuildOrder ? p.itemBuildOrder : [];
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+        { container: true },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+            { item: true, xs: 4 },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: imgTier, style: { width: '32px', float: 'left' } }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_Avatar___default.a, { src: imgChampion, style: { float: 'left' } }),
+            '\xA0',
+            Object.keys(items).map(function (key) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Item__["a" /* default */], { key: key, itemId: items[key] });
+            })
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+            { item: true, xs: 1 },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: 'http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/score.png' }),
+            p.kills,
+            '/',
+            p.deaths,
+            '/',
+            p.assists
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+            { item: true, xs: 1 },
+            p.identity.summonerName
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+            { item: true, xs: 1 },
+            p.enemyTeam.damageType
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
+            { item: true, xs: 1 },
+            p.win ? 'WIN' : 'LOSE'
+        )
+    );
+    // {purchaseEvents.map((event, index) => {
+    //     const showArrow = prevTime != null && (prevTime + 10000)<event['timestamp'];
+    //     prevTime = event['timestamp'];
+    //     return (
+    //         <span key={index}>
+    //                     {showArrow && <i className="fas fa-2x fa-angle-double-right" style={{float: 'left'}}></i>}
+    //             <Item itemId={event.itemId} items={this.props.items}/>
+    //                 </span>
+    //     )
+    // })}
+};
 
-            var perkUrl = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/';
-
-            var p = this.props.participant;
-            var champion = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(this.props.champions.data, { id: p.championId });
-            var version = this.props.champions.version;
-            var imgChampion = 'http://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + champion.key + '.png';
-            var imgTier = 'img/tier/' + p.highestAchievedSeasonTier.toLowerCase() + '.png';
-            var items = p.itemBuildOrder ? p.itemBuildOrder : [];
-
-            // var perk1 = perkUrl +
-
-            var purchaseEvents = p.events && p.events.ITEM_PURCHASED ? p.events.ITEM_PURCHASED : [];
-            var prevTime = null;
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
-                { container: true },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
-                    { item: true, xs: 4 },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: imgTier, style: { width: '32px', float: 'left' } }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_material_ui_Avatar___default.a, { src: imgChampion, style: { float: 'left' } }),
-                    '\xA0',
-                    Object.keys(items).map(function (key) {
-                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Item__["a" /* default */], { key: key, itemId: items[key], items: _this2.props.items });
-                    })
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
-                    { item: true, xs: 1 },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: 'http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/score.png' }),
-                    p.kills,
-                    '/',
-                    p.deaths,
-                    '/',
-                    p.assists
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
-                    { item: true, xs: 1 },
-                    p.identity.summonerName
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
-                    { item: true, xs: 1 },
-                    p.enemyTeam.damageType
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_5_material_ui_Grid___default.a,
-                    { item: true, xs: 1 },
-                    p.win ? 'WIN' : 'LOSE'
-                )
-            );
-
-            // {purchaseEvents.map((event, index) => {
-            //     const showArrow = prevTime != null && (prevTime + 10000)<event['timestamp'];
-            //     prevTime = event['timestamp'];
-            //     return (
-            //         <span key={index}>
-            //                     {showArrow && <i className="fas fa-2x fa-angle-double-right" style={{float: 'left'}}></i>}
-            //             <Item itemId={event.itemId} items={this.props.items}/>
-            //                 </span>
-            //     )
-            // })}
-        }
-    }]);
-
-    return Participant;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Participant);
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Participant));
 
 /***/ }),
 /* 108 */
@@ -71270,26 +71247,15 @@ module.exports = customOmitClone;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Participant__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_material_ui_styles__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_material_ui_styles___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_material_ui_styles__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_classnames__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_classnames__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_material_ui_Avatar__ = __webpack_require__(231);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_material_ui_Avatar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_material_ui_Avatar__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_material_ui_styles__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_material_ui_styles___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_material_ui_styles__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_classnames__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_Avatar__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_Avatar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_material_ui_Avatar__);
 
 
 
@@ -71309,38 +71275,31 @@ var styles = {
     }
 };
 
-var Item = function (_Component) {
-    _inherits(Item, _Component);
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        dictionnaries: state.dictionnaries
+    };
+};
 
-    function Item() {
-        _classCallCheck(this, Item);
+// class Item extends Component {
+var Item = function Item(_ref) {
+    var dictionnaries = _ref.dictionnaries,
+        itemId = _ref.itemId,
+        classes = _ref.classes;
 
-        return _possibleConstructorReturn(this, (Item.__proto__ || Object.getPrototypeOf(Item)).apply(this, arguments));
+
+    var item = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(dictionnaries.items, { id: itemId });
+    var version = dictionnaries.version;
+    var img = 'http://ddragon.leagueoflegends.com/cdn/' + version + '/img/item/' + itemId + '.png';
+
+    if (itemId) {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_material_ui_Avatar___default.a, { className: classes.avatar, src: img, style: { float: 'left' } });
+    } else {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_material_ui_Avatar___default.a, { className: __WEBPACK_IMPORTED_MODULE_4_classnames___default()(classes.avatar, classes.emptyAvatar), size: 32, style: { float: 'left' } });
     }
+};
 
-    _createClass(Item, [{
-        key: 'render',
-        value: function render() {
-            var classes = this.props.classes;
-
-
-            var itemId = this.props.itemId;
-            var item = __WEBPACK_IMPORTED_MODULE_3_lodash___default.a.find(this.props.items.data, { id: itemId });
-            var version = this.props.items.version;
-            var img = 'http://ddragon.leagueoflegends.com/cdn/' + version + '/img/item/' + itemId + '.png';
-
-            if (itemId) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_material_ui_Avatar___default.a, { className: classes.avatar, src: img, style: { float: 'left' } });
-            } else {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_material_ui_Avatar___default.a, { className: __WEBPACK_IMPORTED_MODULE_5_classnames___default()(classes.avatar, classes.emptyAvatar), size: 32, style: { float: 'left' } });
-            }
-        }
-    }]);
-
-    return Item;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_4_material_ui_styles__["withStyles"])(styles)(Item));
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Object(__WEBPACK_IMPORTED_MODULE_3_material_ui_styles__["withStyles"])(styles)(Item)));
 
 /***/ }),
 /* 432 */
@@ -82231,13 +82190,10 @@ var Participants = function (_Component) {
         // }
 
         value: function render() {
-            var _props = this.props,
-                items = _props.items,
-                participants = _props.participants,
-                champions = _props.champions;
+            var participants = this.props.participants;
 
 
-            if (items.fulfilled && participants.fulfilled && champions.fulfilled) {
+            if (participants.fulfilled) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     null,
@@ -82248,7 +82204,7 @@ var Participants = function (_Component) {
                             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_4_material_ui_List__["ListItem"],
                                 { button: true, key: index },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Participant__["a" /* default */], { participant: participant._source, items: items.value, champions: champions.value })
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Participant__["a" /* default */], { participant: participant._source })
                             );
                         })
                     )
@@ -82268,9 +82224,7 @@ var Participants = function (_Component) {
 
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_2_react_refetch__["connect"])(function (props) {
     return {
-        items: 'json/items.json',
-        champions: 'json/champions.json',
-        participants: 'api/match/participants_'
+        participants: 'api/match/participants'
     };
 })(Participants));
 
@@ -82290,8 +82244,7 @@ var Participants = function (_Component) {
 var LoadDictionnaries = function LoadDictionnaries(_ref) {
     var dispatch = _ref.dispatch;
 
-    console.log('LOADED DIC');
-    dispatch(Object(__WEBPACK_IMPORTED_MODULE_2__actions__["a" /* loadDictionnaries */])({ runes: 'TEST' }));
+    dispatch(Object(__WEBPACK_IMPORTED_MODULE_2__actions__["a" /* loadDictionnaries */])());
     return null;
 };
 
@@ -82311,7 +82264,9 @@ var LoadDictionnaries = function LoadDictionnaries(_ref) {
 
 var loadDictionnaries = function loadDictionnaries() {
     return function (dispatch) {
-        return __WEBPACK_IMPORTED_MODULE_1_cross_fetch___default()('api/match/participants').then(function (dictionnaries) {
+        return __WEBPACK_IMPORTED_MODULE_1_cross_fetch___default()('api/match/dictionnaries').then(function (response) {
+            return response.json();
+        }).then(function (dictionnaries) {
             return dispatch({
                 type: __WEBPACK_IMPORTED_MODULE_0__constants__["a" /* ACT_ADD_DICTIONNARIES */],
                 dictionnaries: dictionnaries

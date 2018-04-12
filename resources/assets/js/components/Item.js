@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import Participant from './Participant'
+import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import { withStyles } from 'material-ui/styles';
@@ -18,22 +17,25 @@ const styles = {
     },
 };
 
-class Item extends Component {
-    render() {
-        const { classes } = this.props;
-
-        var itemId = this.props.itemId;
-        var item = _.find(this.props.items.data, {id: itemId});
-        var version = this.props.items.version;
-        var img = 'http://ddragon.leagueoflegends.com/cdn/'+version+'/img/item/'+itemId+'.png';
-
-        if(itemId){
-            return <Avatar className={classes.avatar} src={img} style={{float: 'left'}}/>
-        }
-        else{
-            return <Avatar className={classNames(classes.avatar, classes.emptyAvatar)} size={32} style={{float: 'left'}}/>
-        }
+const mapStateToProps = state => {
+    return {
+        dictionnaries: state.dictionnaries
     }
 }
 
-export default withStyles(styles)(Item);
+// class Item extends Component {
+const Item = ({dictionnaries, itemId, classes}) => {
+
+    var item = _.find(dictionnaries.items, {id: itemId});
+    var version = dictionnaries.version;
+    var img = 'http://ddragon.leagueoflegends.com/cdn/'+version+'/img/item/'+itemId+'.png';
+
+    if(itemId){
+        return <Avatar className={classes.avatar} src={img} style={{float: 'left'}}/>
+    }
+    else{
+        return <Avatar className={classNames(classes.avatar, classes.emptyAvatar)} size={32} style={{float: 'left'}}/>
+    }
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(Item));

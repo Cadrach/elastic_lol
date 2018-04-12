@@ -3,9 +3,12 @@ import fetch from 'cross-fetch'
 
 export const loadDictionnaries = () => {
     return function(dispatch){
-        return fetch('api/match/participants').then(dictionnaries => dispatch({
-            type: ACT_ADD_DICTIONNARIES,
-            dictionnaries
-        }))
+        return fetch('api/match/dictionnaries')
+            .then(response => response.json())
+            .then(dictionnaries => dispatch({
+                type: ACT_ADD_DICTIONNARIES,
+                dictionnaries
+            })
+        )
     }
 }
