@@ -68213,12 +68213,10 @@ var LoadDictionnaries = function LoadDictionnaries(_ref) {
 
 
 var addFilter = function addFilter(key, value) {
-    return function (dispatch, getState) {
-        dispatch({
-            type: __WEBPACK_IMPORTED_MODULE_0__constants__["b" /* ACT_FILTER_ADD */],
-            key: key,
-            value: value
-        });
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants__["b" /* ACT_FILTER_ADD */],
+        key: key,
+        value: value
     };
 };
 

@@ -2,12 +2,10 @@ import {ACT_ADD_DICTIONNARIES, ACT_LOAD_PARTICIPANTS, ACT_FILTER_ADD} from '../c
 import 'whatwg-fetch'
 
 export const addFilter = (key, value) => {
-    return function(dispatch, getState){
-        dispatch({
-            type: ACT_FILTER_ADD,
-            key,
-            value
-        })
+    return {
+        type: ACT_FILTER_ADD,
+        key,
+        value
     }
 }
 
