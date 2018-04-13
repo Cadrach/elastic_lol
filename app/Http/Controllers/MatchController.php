@@ -36,6 +36,7 @@ class MatchController extends Controller
     }
 
     public function dictionnaries(){
+        sleep(2);
         $champions = json_decode(file_get_contents(public_path('json/champions.json')), true);
         return [
             'version' => $champions['version'],

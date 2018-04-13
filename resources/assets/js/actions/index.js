@@ -1,5 +1,17 @@
-import {ACT_ADD_DICTIONNARIES} from '../constants'
+import {ACT_ADD_DICTIONNARIES, ACT_LOAD_PARTICIPANTS} from '../constants'
 import fetch from 'cross-fetch'
+
+export const loadParticipants = () => {
+    return function(dispatch){
+        return fetch('api/match/participants')
+            .then(response => response.json())
+            .then(participants => dispatch({
+                    type: ACT_LOAD_PARTICIPANTS,
+                    participants
+                })
+            )
+    }
+}
 
 export const loadDictionnaries = () => {
     return function(dispatch){
