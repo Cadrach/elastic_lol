@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Participant from './Participant'
 
-import List, {ListItem} from 'material-ui/List';
+import { Segment } from 'semantic-ui-react'
 
 const mapStateToProps = state => {
     return {
@@ -12,16 +12,13 @@ const mapStateToProps = state => {
 
 const Participants = ({participants}) => {
         if (participants.took) {
-            return <div>
-
-                <List>
+            return <Segment.Group>
                 {participants.hits.hits.map((participant,index) => {
-                    return <ListItem button key={index}>
+                    return <Segment key={index}>
                         <Participant participant={participant._source}/>
-                    </ListItem>
+                    </Segment>
                 })}
-                </List>
-            </div>
+            </Segment.Group>
         } else {
             return <i>WHAT?</i>
         }

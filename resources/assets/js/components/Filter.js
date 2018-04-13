@@ -1,19 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withStyles } from 'material-ui/styles';
 import { addFilter} from '../actions'
+import { Input } from 'semantic-ui-react'
 
-import List, {ListItem} from 'material-ui/List';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
-import Grid from 'material-ui/Grid';
-
-const styles = {
-
-};
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        active: ownProps.filter === state.visibilityFilter
+        value: state.filters[ownProps.field]
     }
 }
 
@@ -25,9 +18,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 }
 
-const Filter = ({field, onChange}) => {
-    console.log(field)
-    return <input type="text" placeholder={field} onChange={onChange}/>;
+const Filter = ({field, onChange, value}) => {
+    console.log(field, value)
+    return <Input type="text" placeholder={field} onChange={onChange} value={value}/>;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Filter));
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);

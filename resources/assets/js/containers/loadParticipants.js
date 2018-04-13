@@ -1,12 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Button } from 'semantic-ui-react'
 import { loadParticipants } from '../actions'
-
-// const mapStateToProps = (state, ownProps) => {
-//     return {
-//         active: ownProps.filter === state.visibilityFilter
-//     }
-// }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
@@ -17,7 +12,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 const LoadParticipants = ({ onClick }) => {
-    return <button onClick={onClick}>Apply</button>;
+    return <Button onClick={onClick}>Apply</Button>;
 }
 
 export default connect(null, mapDispatchToProps)(LoadParticipants)

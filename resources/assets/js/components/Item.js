@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
-import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import Avatar from 'material-ui/Avatar';
+import { Image } from 'semantic-ui-react'
 
 const styles = {
     avatar: {
@@ -31,11 +30,11 @@ const Item = ({dictionnaries, itemId, classes}) => {
     var img = 'http://ddragon.leagueoflegends.com/cdn/'+version+'/img/item/'+itemId+'.png';
 
     if(itemId){
-        return <Avatar className={classes.avatar} src={img} style={{float: 'left'}}/>
+        return <Image src={img} size="mini" floated="left"/>
     }
     else{
-        return <Avatar className={classNames(classes.avatar, classes.emptyAvatar)} size={32} style={{float: 'left'}}/>
+        return <Image size="mini" floated="left"/>
     }
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(Item));
+export default connect(mapStateToProps)(Item);

@@ -1,6 +1,6 @@
 import {ACT_FILTER_ADD, ACT_FILTER_REMOVE, ACT_FILTER_UPDATE} from '../constants'
 
-const filters = (state = {}, action) => {
+const filters = (state = {championId: 56}, action) => {
     if(action.type == ACT_FILTER_ADD){
         return Object.assign({}, state, {
             [action.key]: action.value

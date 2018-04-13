@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash'
+
+
+import { Grid, Image } from 'semantic-ui-react'
 import Item from './Item'
 
 // import { withStyles } from 'material-ui/styles';
-import Avatar from 'material-ui/Avatar';
-import Grid from 'material-ui/Grid';
 
 const mapStateToProps = state => {
     return {
@@ -25,24 +26,22 @@ const Participant = ({dictionnaries, participant}) => {
     var imgChampion = 'http://ddragon.leagueoflegends.com/cdn/'+version+'/img/champion/'+champion.key+'.png';
     var imgTier = 'img/tier/'+p.highestAchievedSeasonTier.toLowerCase()+'.png';
     var items = p.itemBuildOrder ? p.itemBuildOrder:[];
-    return <Grid container>
-        <Grid item xs={4}>
-            <img src={imgTier} style={{width: '32px', float: 'left'}}/>
-            <Avatar src={imgChampion} style={{float: 'left'}}/>&nbsp;
-
-
+    return <Grid>
+        <Grid.Column width={6}>
+            <Image src={imgTier} size="mini" floated="left"/>
+            <Image src={imgChampion} size="mini" floated="left"/>&nbsp;
 
             {Object.keys(items).map(key => (
-                <Item key={key} itemId={items[key]}/>
+                <Item key={key} size="mini" itemId={items[key]}/>
             ))}
-        </Grid>
-        <Grid item xs={1}>
-            <img src={'http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/score.png'}/>
+        </Grid.Column>
+        <Grid.Column width={2}>
+            <Image src={'http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/score.png'} size="mini" floated="left"/>
             {p.kills}/{p.deaths}/{p.assists}
-        </Grid>
-        <Grid item xs={1}>{p.identity.summonerName}</Grid>
-        <Grid item xs={1}>{p.enemyTeam.damageType}</Grid>
-        <Grid item xs={1}>{p.win ? 'WIN':'LOSE'}</Grid>
+        </Grid.Column>
+        <Grid.Column width={1}>{p.identity.summonerName}</Grid.Column>
+        <Grid.Column width={1}>{p.enemyTeam.damageType}</Grid.Column>
+        <Grid.Column width={1}>{p.win ? 'WIN':'LOSE'}</Grid.Column>
     </Grid>
     // {purchaseEvents.map((event, index) => {
     //     const showArrow = prevTime != null && (prevTime + 10000)<event['timestamp'];
