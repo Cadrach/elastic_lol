@@ -1,5 +1,5 @@
 import {ACT_ADD_DICTIONNARIES, ACT_LOAD_PARTICIPANTS} from '../constants'
-import fetch from 'cross-fetch'
+import 'whatwg-fetch'
 
 export const loadParticipants = () => {
     return function(dispatch){

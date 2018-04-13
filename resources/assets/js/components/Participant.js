@@ -14,6 +14,9 @@ const mapStateToProps = state => {
 }
 
 const Participant = ({dictionnaries, participant}) => {
+    //Must wait for dictionnaries
+    if( ! dictionnaries.version){return null}
+
     var perkUrl = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/';
 
     var p = participant;
