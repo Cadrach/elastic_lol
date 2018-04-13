@@ -5,6 +5,7 @@ import { store } from '../store'
 
 // import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Participants from './Participants';
+import Filter from './Filter';
 import LoadDictionnaries from '../containers/loadDictionnaries'
 import LoadParticipants from '../containers/loadParticipants'
 
@@ -16,6 +17,7 @@ class Main extends Component {
         return (
             <Provider store={store}>
                 <div>
+                    <Filter field={'championId'}/>
                     <CssBaseline />
                     <LoadDictionnaries/>
                     <LoadParticipants/>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ElasticSearchClient;
+use Illuminate\Support\Facades\Input;
 
 class MatchController extends Controller
 {
@@ -50,18 +51,30 @@ class MatchController extends Controller
             return json_decode(file_get_contents(public_path('json/test-participants.json')), true);
         }
 
+        $mappings = json_decode(file_get_contents(base_path('elasticsearch/lol_participant.mapping.json')))
+            ->lol_participant->mappings->lol_participant->properties;
+
+        $filters = $this->getPayload();
+
+        if( ! count($filters)){
+            return [];
+        }
+
+        $query = [
+            'bool' => ['must' => []],
+        ];
+        foreach($filters as $key=>$value){
+            if( ! isset($mappings->{$key})) continue; //ignore unknowns
+            if( ! is_array($value)){
+                $query['bool']['must'][] = ['match' => [$key => $value]];
+            }
+        }
+
         $client = ElasticSearchClient::get();
 
         $params = json_decode('{
             "size": 20,
-            "query": {
-                "bool": {
-                    "must": [
-                        {"match": {"championId": 56}},
-                        {"match": {"win": true}}
-                    ]
-                }
-            }
+            "query": ' . json_encode($query) . '
         }');
 
         if(json_last_error()){

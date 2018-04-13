@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/match/search', 'MatchController@search');
-Route::get('/match/participants', 'MatchController@participants');
+Route::post('/match/participants', 'MatchController@participants');
 Route::get('/match/dictionnaries', 'MatchController@dictionnaries');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

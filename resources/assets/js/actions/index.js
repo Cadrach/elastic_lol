@@ -1,9 +1,26 @@
-import {ACT_ADD_DICTIONNARIES, ACT_LOAD_PARTICIPANTS} from '../constants'
+import {ACT_ADD_DICTIONNARIES, ACT_LOAD_PARTICIPANTS, ACT_FILTER_ADD} from '../constants'
 import 'whatwg-fetch'
 
+export const addFilter = (key, value) => {
+    return function(dispatch, getState){
+        dispatch({
+            type: ACT_FILTER_ADD,
+            key,
+            value
+        })
+    }
+}
+
 export const loadParticipants = () => {
-    return function(dispatch){
-        return fetch('api/match/participants')
+    return function(dispatch, getState){
+
+        var filters = getState().filters;
+        console.log(filters)
+
+        return fetch('api/match/participants', {
+            method: 'POST',
+            body: JSON.stringify(filters)
+        })
             .then(response => response.json())
             .then(participants => dispatch({
                     type: ACT_LOAD_PARTICIPANTS,
