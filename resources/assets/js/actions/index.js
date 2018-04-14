@@ -1,6 +1,8 @@
 import {ACT_ADD_DICTIONNARIES, ACT_LOAD_PARTICIPANTS, ACT_FILTER_ADD} from '../constants'
 import 'whatwg-fetch'
 
+
+
 export const addFilter = (key, value) => {
     return {
         type: ACT_FILTER_ADD,

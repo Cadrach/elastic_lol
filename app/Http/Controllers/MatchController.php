@@ -38,11 +38,15 @@ class MatchController extends Controller
 
     public function dictionnaries(){
         $champions = json_decode(file_get_contents(public_path('json/champions.json')), true);
+        $version = $champions['version'];
         return [
-            'version' => $champions['version'],
+            'version' => $version,
             'items' => json_decode(file_get_contents(public_path('json/items.json')), true)['data'],
             'champions' => $champions['data'],
             'runes' => json_decode(file_get_contents(public_path('json/runes.json')), true),
+            'urls' => [
+                'champion' => "http://ddragon.leagueoflegends.com/cdn/$version/img/champion/"
+            ],
         ];
     }
 
