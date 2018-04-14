@@ -5,6 +5,7 @@ import { store } from '../store'
 
 import Participants from './Participants';
 import Filter from './Filter';
+import FilterItem from './FilterItem';
 import FilterChampion from './FilterChampion';
 import LoadDictionnaries from '../containers/loadDictionnaries'
 import LoadParticipants from '../containers/loadParticipants'
@@ -18,6 +19,12 @@ class Main extends Component {
             <Provider store={store}>
                 <div>
                     <FilterChampion field={'championId'}/>
+                    <FilterItem field={'itemBuildOrder.item0'}/>
+                    <FilterItem field={'itemBuildOrder.item1'}/>
+                    <FilterItem field={'itemBuildOrder.item2'}/>
+                    <FilterItem field={'itemBuildOrder.item3'}/>
+                    <FilterItem field={'itemBuildOrder.item4'}/>
+                    <FilterItem field={'itemBuildOrder.item5'}/>
                     {/*<CssBaseline />*/}
                     <LoadDictionnaries/>
                     <LoadParticipants/>

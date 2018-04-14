@@ -12,7 +12,8 @@ const filters = (state = {championId: 56}, action) => {
 
 export const filterMapStateToProps = (state, ownProps) => {
     return {
-        value: state.filters[ownProps.field]
+        value: state.filters[ownProps.field],
+        dictionnaries: state.dictionnaries
     }
 }
 

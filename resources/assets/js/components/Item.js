@@ -27,7 +27,7 @@ const Item = ({dictionnaries, itemId, classes}) => {
 
     var item = _.find(dictionnaries.items, {id: itemId});
     var version = dictionnaries.version;
-    var img = 'http://ddragon.leagueoflegends.com/cdn/'+version+'/img/item/'+itemId+'.png';
+    var img = dictionnaries.urls.item+itemId+'.png';
 
     if(itemId){
         return <Image src={img} size="mini" floated="left"/>

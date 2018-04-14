@@ -45,7 +45,8 @@ class MatchController extends Controller
             'champions' => $champions['data'],
             'runes' => json_decode(file_get_contents(public_path('json/runes.json')), true),
             'urls' => [
-                'champion' => "http://ddragon.leagueoflegends.com/cdn/$version/img/champion/"
+                'champion' => "http://ddragon.leagueoflegends.com/cdn/$version/img/champion/",
+                'item' => "http://ddragon.leagueoflegends.com/cdn/$version/img/item/",
             ],
         ];
     }
