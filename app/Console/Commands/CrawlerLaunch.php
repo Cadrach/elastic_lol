@@ -240,7 +240,7 @@ class CrawlerLaunch extends Command
         }
         catch(ClientException $e){
             if($e->getResponse()->getStatusCode() != 404){
-                $this->error('Sleeping 10min - Client Exception: ' . $e->getMessage());
+                $this->error('Sleeping 10min - ' . count($this->requests ) . ' requests stored currently - Client Exception: ' . $e->getMessage());
                 sleep(600);
             }
             else{
@@ -372,7 +372,10 @@ class CrawlerLaunch extends Command
             $responses = json_decode($info['response']['body'], true);
 
             if($responses['errors']>0){
-                throw new \Exception("\nError saving to ElasticSearch:\n" . print_r($responses, true));
+                $this->error("Error saving to ElasticSearch:" . count($responses['errors']) . "errors. Sleeping 10min and retry");
+                sleep(600);
+                $this->bulkSave($bulk);
+                return;
             }
 
             $this->line("Inserted $bulkSize matches, took {$responses['took']}");

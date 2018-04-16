@@ -12,6 +12,21 @@
 @import '~semantic-ui-css/semantic.min.css';
 
 
-.filter-item{
-  height: 60px !important;
+.filter-item.ui.dropdown{
+  width: 52px;
+  &>.text .filter-item-title{
+    display: none;
+  }
+  .menu {
+    &>.item{
+      padding: 2px 10px !important;
+    }
+    img{
+      width: 16px;
+      margin-right: 5px;
+      border-radius: 2px;
+    }
+  }
 }
+
+.ui.search.selection img{display: none !important}

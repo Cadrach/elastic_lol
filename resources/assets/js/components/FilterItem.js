@@ -1,29 +1,45 @@
 import React, { Component } from 'react'
-import { Image, Dropdown } from 'semantic-ui-react'
+import { Icon, Image, Dropdown } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import {filterMapStateToProps, filterMapDispatchToProps} from "../reducers/filters";
 import _ from 'lodash'
 
 
 const FilterItem = ({field, onChange, value, dictionnaries}) => {
-    // var search = function(){
-    //     return _.
-    // }
+    //If no dictionnaries, exit
     if( ! dictionnaries) return null;
+
+    //
     var options = _.chain(dictionnaries.items).map(function(v){
         if(v.from && !v.into && v.gold.purchasable){
             return {
                 name: v.name,
                 value: v.id,
-                text: <span><Image size={'mini'} verticalAlign='middle' src={dictionnaries.urls.item+v.image.full}/>&nbsp;{v.name}</span>
+                text: <span>
+                    <Image size={'mini'} verticalAlign='middle' src={dictionnaries.urls.item+v.image.full}/>
+                    <span className={'filter-item-title'}>{v.name}</span>
+                    </span>
             }
         }
     })
         .filter()
         .sortBy('name')
-        .value()
+        .value();
 
-    return <Dropdown className={'filter-item'} placeholder='Item' search selectOnBlur={false} selection options={options} onChange={onChange}/>
+    options.unshift({
+        name: '',
+        value: '',
+        text: <Icon name={'cube'}/>
+    })
+
+    //Custom search
+    var search = function(list, value){
+        return _.filter(list, function(v){return v.name.match(new RegExp(value, 'i'))!==null});
+    }
+
+    var placeholder = <Icon name={'cube'}/>
+
+    return <Dropdown className={'filter-item'} placeholder={placeholder} compact search={search} inline selectOnBlur={false}  options={options} onChange={onChange}/>
 }
 
 export default connect(filterMapStateToProps, filterMapDispatchToProps)(FilterItem);

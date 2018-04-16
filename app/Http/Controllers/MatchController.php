@@ -69,6 +69,7 @@ class MatchController extends Controller
             'bool' => ['must' => []],
         ];
         foreach($filters as $key=>$value){
+            if($value === "") continue;
             if( ! $this->hasMapping($key, $mappings)) continue; //ignore unknowns
             if( ! is_array($value)){
                 $query['bool']['must'][] = ['match' => [$key => $value]];
