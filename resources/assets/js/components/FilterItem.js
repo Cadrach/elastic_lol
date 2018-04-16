@@ -23,7 +23,7 @@ const FilterItem = ({field, onChange, value, dictionnaries}) => {
         .sortBy('name')
         .value()
 
-    return <Dropdown className={'filter-item'} placeholder='Item' search searchInput={'name'} selection options={options} onChange={onChange}/>
+    return <Dropdown className={'filter-item'} placeholder='Item' search selectOnBlur={false} selection options={options} onChange={onChange}/>
 }
 
 export default connect(filterMapStateToProps, filterMapDispatchToProps)(FilterItem);

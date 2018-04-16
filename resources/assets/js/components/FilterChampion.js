@@ -17,7 +17,7 @@ const FilterChampion = ({field, onChange, value, dictionnaries}) => {
         .sortBy('name')
         .value()
 
-    return <Dropdown placeholder='Champion' search selection options={options} onChange={onChange}/>
+    return <Dropdown placeholder='Champion' value={value} selectOnBlur={false} search selection options={options} onChange={onChange}/>
 }
 
 export default connect(filterMapStateToProps, filterMapDispatchToProps)(FilterChampion);

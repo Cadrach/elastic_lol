@@ -69,7 +69,7 @@ class MatchController extends Controller
             'bool' => ['must' => []],
         ];
         foreach($filters as $key=>$value){
-            if( ! isset($mappings->{$key})) continue; //ignore unknowns
+            if( ! $this->hasMapping($key, $mappings)) continue; //ignore unknowns
             if( ! is_array($value)){
                 $query['bool']['must'][] = ['match' => [$key => $value]];
             }
@@ -82,6 +82,8 @@ class MatchController extends Controller
             "query": ' . json_encode($query) . '
         }');
 
+//        print_r($params);die();
+
         if(json_last_error()){
             throw new \Exception('JSON SYNTAX ERROR: ' . json_last_error_msg());
         }
@@ -91,5 +93,21 @@ class MatchController extends Controller
             'type' => 'lol_participant',
             'body' => $params
         ]);
+    }
+
+    protected function hasMapping($field, $mappings){
+        $parts = explode('.', $field);
+        if( ! isset($mappings->{$parts[0]})){
+            return false;
+        }
+        else if(count($parts) > 1){
+            $currentField = array_shift($parts);
+            $newField = implode('.', $parts);
+            return $this->hasMapping($newField, $mappings->{$currentField}->properties);
+        }
+        else{
+            return true;
+        }
+
     }
 }
