@@ -81,6 +81,8 @@ class CrawlerLaunch extends Command
 
     protected $bulkCount = 0;
 
+    protected $logFile;
+
     /**
      * Create a new command instance.
      *
@@ -106,6 +108,8 @@ class CrawlerLaunch extends Command
         $root = 'https://'.$server.'.api.riotgames.com';
         $this->requests = collect();
         $previousAccounts = collect();
+
+        $this->logFile = storage_path('logs/' . (new \DateTime)->format('Ymd-Hi') . '-crawler.log');
 
         //Setup list of completed items
         $this->completeItems = collect(json_decode(file_get_contents(public_path('json/items.json')), true)['data'])
@@ -206,7 +210,7 @@ class CrawlerLaunch extends Command
 
                 //Compute how long we should wait
                 $wait = ceil($nextTime - $now);
-                $this->error("Throttling (rule $k) {$wait}s");
+                $this->log("Throttling (rule $k) {$wait}s");
                 sleep($wait);
                 return $this->checkThrottling();
             }
@@ -229,32 +233,32 @@ class CrawlerLaunch extends Command
         catch(ServerException $e){
             //Ignore this match
             if($e->getResponse()->getStatusCode() == 503){
-                $this->error('Sleeping 5s - Server Exception: ' . $e->getMessage());
+                $this->log('Sleeping 5s - Server Exception: ' . $e->getMessage());
                 sleep(5);
             }
             else{
-                $this->error('Sleeping 60s - Server Exception: ' . $e->getMessage());
+                $this->log('Sleeping 60s - Server Exception: ' . $e->getMessage());
                 sleep(60);
             }
             return $this->getRiotDataFromUrl($url);
         }
         catch(ClientException $e){
             if($e->getResponse()->getStatusCode() != 404){
-                $this->error('Sleeping 10min - ' . count($this->requests ) . ' requests stored currently - Client Exception: ' . $e->getMessage());
+                $this->log('Sleeping 10min - ' . count($this->requests ) . ' requests stored currently - Client Exception: ' . $e->getMessage());
                 sleep(600);
             }
             else{
-                $this->error("404 Not found: $url");
+                $this->log("404 Not found: $url");
             }
             return false;
         }
         catch(ConnectException $e){
-            $this->error('Sleeping 60s - Connect Exception: ' . $e->getMessage());
+            $this->log('Sleeping 60s - Connect Exception: ' . $e->getMessage());
             sleep(60);
         }
 //        catch(ThrottleException $e){
 //            //Ignore this match
-//            $this->error('Throttling 1s');
+//            $this->log('Throttling 1s');
 //            sleep(1);
 //            return $this->getRiotDataFromUrl($url);
 //        }
@@ -317,12 +321,12 @@ class CrawlerLaunch extends Command
                     ]],
                     $match,
                     
-                    ['index'=> [
-                        '_index' => 'lol_timeline',
-                        '_type' => 'lol_timeline',
-                        '_id' => $matchId,
-                    ]],
-                    $timeline
+//                    ['index'=> [
+//                        '_index' => 'lol_timeline',
+//                        '_type' => 'lol_timeline',
+//                        '_id' => $matchId,
+//                    ]],
+//                    $timeline
                 ];
 
                 foreach($participants as $p){
@@ -372,7 +376,7 @@ class CrawlerLaunch extends Command
             $responses = json_decode($info['response']['body'], true);
 
             if($responses['errors']>0){
-                $this->error("Error saving to ElasticSearch:" . count($responses['errors']) . "errors. Sleeping 10min and retry");
+                $this->log("Error saving to ElasticSearch:" . count($responses['errors']) . "errors. Sleeping 10min and retry", print_r($responses, true));
                 sleep(600);
                 $this->bulkSave($bulk);
                 return;
@@ -600,5 +604,14 @@ class CrawlerLaunch extends Command
 
     protected function percent ($v){
         return round($v * 100, 2);
+    }
+
+    protected function log($text, $more = null){
+        $time = (new \DateTime)->format('Y/m/d-H:i:s');
+        $this->error($text);
+        file_put_contents($this->logFile, "$time - $text\n", FILE_APPEND);
+        if($more){
+            file_put_contents($this->logFile, "$time - $more\n", FILE_APPEND);
+        }
     }
 }
