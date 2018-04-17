@@ -78149,7 +78149,8 @@ var Participant = function Participant(_ref) {
     var champion = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(dictionnaries.champions, { id: p.championId });
     var version = dictionnaries.version;
     var imgChampion = 'http://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + champion.key + '.png';
-    var imgTier = 'img/tier/' + p.highestAchievedSeasonTier.toLowerCase() + '.png';
+    var imgTier = 'images/tier/' + p.highestAchievedSeasonTier.toLowerCase() + '.png';
+    var imgPerk0 = 'images/perk/' + p.perk0 + '.png';
     var items = p.itemBuildOrder ? p.itemBuildOrder : [];
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */],
@@ -78157,6 +78158,7 @@ var Participant = function Participant(_ref) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */].Column,
             { width: 6 },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgPerk0, size: 'mini', floated: 'left' }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgTier, size: 'mini', floated: 'left' }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgChampion, size: 'mini', floated: 'left' }),
             '\xA0',
