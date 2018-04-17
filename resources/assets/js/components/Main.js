@@ -7,6 +7,7 @@ import Participants from './Participants';
 import FilterKeyStone from './FilterKeyStone';
 import FilterItem from './FilterItem';
 import FilterChampion from './FilterChampion';
+import FilterTier from './FilterTier';
 import LoadDictionnaries from '../containers/loadDictionnaries'
 import LoadParticipants from '../containers/loadParticipants'
 
@@ -20,6 +21,7 @@ class Main extends Component {
                 <div>
                     <FilterKeyStone field={'perk0'}/>
                     <FilterChampion field={'championId'}/>
+                    <FilterTier field={'highestAchievedSeasonTier'}/>
                     <FilterItem field={'itemBuildOrder.item0'}/>
                     <FilterItem field={'itemBuildOrder.item1'}/>
                     <FilterItem field={'itemBuildOrder.item2'}/>

@@ -45,9 +45,11 @@ class MatchController extends Controller
             'champions' => $champions['data'],
             'runes' => json_decode(file_get_contents(public_path('json/runes.json')), true),
             'runePaths' => json_decode(file_get_contents(public_path('json/rune-paths.json')), true),
+            'summonerSpells' => collect(json_decode(file_get_contents(public_path('json/summoner-spells.json')), true)['data'])->keyBy('id'),
             'urls' => [
                 'champion' => "http://ddragon.leagueoflegends.com/cdn/$version/img/champion/",
                 'item' => "http://ddragon.leagueoflegends.com/cdn/$version/img/item/",
+                'summonerSpell' => "http://ddragon.leagueoflegends.com/cdn/$version/img/spell/",
             ],
         ];
     }

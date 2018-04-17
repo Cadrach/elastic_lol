@@ -5,24 +5,21 @@ import {filterMapStateToProps, filterMapDispatchToProps} from "../reducers/filte
 import _ from 'lodash'
 
 
-const FilterKeyStone = ({field, onChange, value, dictionnaries}) => {
+const FilterTier = ({field, onChange, value, dictionnaries}) => {
     //If no dictionnaries, exit
     if( ! dictionnaries) return null;
 
-    //
-    var options = _.chain(dictionnaries.runePaths).map(function(v){return v.slots[0].runes}).flatten().map(function(v){
-        var src = 'images/perk/' + v.id + '.png';
+    var options = _.map(['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Challenger', 'Master'], function(v){
+        var src = 'images/tier/' + v.toLowerCase() + '.png';
         return {
-            name: v.name,
-            value: v.id,
+            name: v,
+            value: v.toUpperCase(),
             text: <span>
                 <Image size={'mini'} verticalAlign='middle' src={src}/>
-                <span className={'filter-item-title'}>{v.name}</span>
+                <span className={'filter-item-title'}>{v}</span>
                 </span>
         }
     })
-        // .sortBy('name')
-        .value();
 
     options.unshift({
         name: '',
@@ -40,4 +37,4 @@ const FilterKeyStone = ({field, onChange, value, dictionnaries}) => {
     return <Dropdown className={'filter-item'} placeholder={placeholder} compact search={search} inline selectOnBlur={false}  options={options} onChange={onChange}/>
 }
 
-export default connect(filterMapStateToProps, filterMapDispatchToProps)(FilterKeyStone);
+export default connect(filterMapStateToProps, filterMapDispatchToProps)(FilterTier);

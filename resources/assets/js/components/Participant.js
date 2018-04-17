@@ -23,15 +23,21 @@ const Participant = ({dictionnaries, participant}) => {
     var p = participant;
     var champion = _.find(dictionnaries.champions, {id: p.championId});
     var version = dictionnaries.version;
-    var imgChampion = 'http://ddragon.leagueoflegends.com/cdn/'+version+'/img/champion/'+champion.key+'.png';
+    var imgChampion = dictionnaries.urls.champion+champion.key+'.png';
     var imgTier = 'images/tier/'+p.highestAchievedSeasonTier.toLowerCase()+'.png';
     var imgPerk0 = 'images/perk/' + p.perk0 + '.png';
+    var imgSum1 = dictionnaries.urls.summonerSpell + dictionnaries.summonerSpells[Math.min(p.spell1Id, p.spell2Id)].key + '.png';
+    var imgSum2 = dictionnaries.urls.summonerSpell + dictionnaries.summonerSpells[Math.max(p.spell1Id, p.spell2Id)].key + '.png';
     var items = p.itemBuildOrder ? p.itemBuildOrder:[];
     return <Grid>
         <Grid.Column width={6}>
             <Image src={imgPerk0} size="mini" floated="left"/>
             <Image src={imgTier} size="mini" floated="left"/>
-            <Image src={imgChampion} size="mini" floated="left"/>&nbsp;
+            <Image src={imgChampion} size="mini" floated="left"/>
+            <Image src={imgSum1} size="mini" floated="left"/>
+            <Image src={imgSum2} size="mini" floated="left"/>
+
+            &nbsp;
 
             {Object.keys(items).map(key => (
                 <Item key={key} size="mini" itemId={items[key]}/>

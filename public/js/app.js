@@ -57217,8 +57217,9 @@ module.exports = function spread(callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__FilterKeyStone__ = __webpack_require__(859);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__FilterItem__ = __webpack_require__(832);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__FilterChampion__ = __webpack_require__(833);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__containers_loadDictionnaries__ = __webpack_require__(834);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__containers_loadParticipants__ = __webpack_require__(835);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__FilterTier__ = __webpack_require__(860);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__containers_loadDictionnaries__ = __webpack_require__(834);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__containers_loadParticipants__ = __webpack_require__(835);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -57226,6 +57227,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -57263,14 +57265,15 @@ var Main = function (_Component) {
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__FilterKeyStone__["a" /* default */], { field: 'perk0' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__FilterChampion__["a" /* default */], { field: 'championId' }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__FilterTier__["a" /* default */], { field: 'highestAchievedSeasonTier' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__FilterItem__["a" /* default */], { field: 'itemBuildOrder.item0' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__FilterItem__["a" /* default */], { field: 'itemBuildOrder.item1' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__FilterItem__["a" /* default */], { field: 'itemBuildOrder.item2' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__FilterItem__["a" /* default */], { field: 'itemBuildOrder.item3' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__FilterItem__["a" /* default */], { field: 'itemBuildOrder.item4' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__FilterItem__["a" /* default */], { field: 'itemBuildOrder.item5' }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__containers_loadDictionnaries__["a" /* default */], null),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__containers_loadParticipants__["a" /* default */], null),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__containers_loadDictionnaries__["a" /* default */], null),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__containers_loadParticipants__["a" /* default */], null),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'h3',
                         null,
@@ -78149,9 +78152,11 @@ var Participant = function Participant(_ref) {
     var p = participant;
     var champion = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(dictionnaries.champions, { id: p.championId });
     var version = dictionnaries.version;
-    var imgChampion = 'http://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + champion.key + '.png';
+    var imgChampion = dictionnaries.urls.champion + champion.key + '.png';
     var imgTier = 'images/tier/' + p.highestAchievedSeasonTier.toLowerCase() + '.png';
     var imgPerk0 = 'images/perk/' + p.perk0 + '.png';
+    var imgSum1 = dictionnaries.urls.summonerSpell + dictionnaries.summonerSpells[Math.min(p.spell1Id, p.spell2Id)].key + '.png';
+    var imgSum2 = dictionnaries.urls.summonerSpell + dictionnaries.summonerSpells[Math.max(p.spell1Id, p.spell2Id)].key + '.png';
     var items = p.itemBuildOrder ? p.itemBuildOrder : [];
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */],
@@ -78162,6 +78167,8 @@ var Participant = function Participant(_ref) {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgPerk0, size: 'mini', floated: 'left' }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgTier, size: 'mini', floated: 'left' }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgChampion, size: 'mini', floated: 'left' }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgSum1, size: 'mini', floated: 'left' }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgSum2, size: 'mini', floated: 'left' }),
             '\xA0',
             Object.keys(items).map(function (key) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Item__["a" /* default */], { key: key, size: 'mini', itemId: items[key] });
@@ -99119,7 +99126,6 @@ var FilterKeyStone = function FilterKeyStone(_ref) {
     var options = __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.chain(dictionnaries.runePaths).map(function (v) {
         return v.slots[0].runes;
     }).flatten().map(function (v) {
-        console.log(v);
         var src = 'images/perk/' + v.id + '.png';
         return {
             name: v.name,
@@ -99158,6 +99164,71 @@ var FilterKeyStone = function FilterKeyStone(_ref) {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_2_react_redux__["b" /* connect */])(__WEBPACK_IMPORTED_MODULE_3__reducers_filters__["c" /* filterMapStateToProps */], __WEBPACK_IMPORTED_MODULE_3__reducers_filters__["b" /* filterMapDispatchToProps */])(FilterKeyStone));
+
+/***/ }),
+/* 860 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__reducers_filters__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
+
+
+
+
+
+
+var FilterTier = function FilterTier(_ref) {
+    var field = _ref.field,
+        onChange = _ref.onChange,
+        value = _ref.value,
+        dictionnaries = _ref.dictionnaries;
+
+    //If no dictionnaries, exit
+    if (!dictionnaries) return null;
+
+    var options = __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.map(['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Challenger', 'Master'], function (v) {
+        var src = 'images/tier/' + v.toLowerCase() + '.png';
+        return {
+            name: v,
+            value: v.toUpperCase(),
+            text: __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'span',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Image */], { size: 'mini', verticalAlign: 'middle', src: src }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    { className: 'filter-item-title' },
+                    v
+                )
+            )
+        };
+    });
+
+    options.unshift({
+        name: '',
+        value: '',
+        text: __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["d" /* Icon */], { name: 'cube' })
+    });
+
+    //Custom search
+    var search = function search(list, value) {
+        return __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.filter(list, function (v) {
+            return v.name.match(new RegExp(value, 'i')) !== null;
+        });
+    };
+
+    var placeholder = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["d" /* Icon */], { name: 'cube' });
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["b" /* Dropdown */], { className: 'filter-item', placeholder: placeholder, compact: true, search: search, inline: true, selectOnBlur: false, options: options, onChange: onChange });
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_2_react_redux__["b" /* connect */])(__WEBPACK_IMPORTED_MODULE_3__reducers_filters__["c" /* filterMapStateToProps */], __WEBPACK_IMPORTED_MODULE_3__reducers_filters__["b" /* filterMapDispatchToProps */])(FilterTier));
 
 /***/ })
 /******/ ]);
