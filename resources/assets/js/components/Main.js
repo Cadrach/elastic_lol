@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { store } from '../store'
 
 import Participants from './Participants';
-import Filter from './Filter';
+import FilterKeyStone from './FilterKeyStone';
 import FilterItem from './FilterItem';
 import FilterChampion from './FilterChampion';
 import LoadDictionnaries from '../containers/loadDictionnaries'
@@ -18,6 +18,7 @@ class Main extends Component {
         return (
             <Provider store={store}>
                 <div>
+                    <FilterKeyStone field={'perk0'}/>
                     <FilterChampion field={'championId'}/>
                     <FilterItem field={'itemBuildOrder.item0'}/>
                     <FilterItem field={'itemBuildOrder.item1'}/>

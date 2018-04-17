@@ -2050,7 +2050,7 @@ module.exports = getTag;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__elements_Image_ImageGroup__ = __webpack_require__(312);
 /* unused harmony reexport ImageGroup */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__elements_Input__ = __webpack_require__(190);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_58__elements_Input__["a"]; });
+/* unused harmony reexport Input */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_59__elements_Label__ = __webpack_require__(127);
 /* unused harmony reexport Label */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_60__elements_Label_LabelDetail__ = __webpack_require__(313);
@@ -2080,7 +2080,7 @@ module.exports = getTag;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_72__elements_Reveal_RevealContent__ = __webpack_require__(368);
 /* unused harmony reexport RevealContent */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_73__elements_Segment__ = __webpack_require__(796);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_73__elements_Segment__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_73__elements_Segment__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_74__elements_Segment_SegmentGroup__ = __webpack_require__(370);
 /* unused harmony reexport SegmentGroup */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_75__elements_Step__ = __webpack_require__(797);
@@ -57214,7 +57214,7 @@ module.exports = function spread(callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store__ = __webpack_require__(466);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Participants__ = __webpack_require__(472);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Filter__ = __webpack_require__(831);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__FilterKeyStone__ = __webpack_require__(859);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__FilterItem__ = __webpack_require__(832);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__FilterChampion__ = __webpack_require__(833);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__containers_loadDictionnaries__ = __webpack_require__(834);
@@ -57261,6 +57261,7 @@ var Main = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__FilterKeyStone__["a" /* default */], { field: 'perk0' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__FilterChampion__["a" /* default */], { field: 'championId' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__FilterItem__["a" /* default */], { field: 'itemBuildOrder.item0' }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__FilterItem__["a" /* default */], { field: 'itemBuildOrder.item1' }),
@@ -78086,11 +78087,11 @@ var Participants = function Participants(_ref) {
 
     if (participants.took) {
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["g" /* Segment */].Group,
+            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["f" /* Segment */].Group,
             null,
             participants.hits.hits.map(function (participant, index) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["g" /* Segment */],
+                    __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["f" /* Segment */],
                     { key: index },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Participant__["a" /* default */], { participant: participant._source })
                 );
@@ -98891,31 +98892,7 @@ var Item = function Item(_ref) {
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Item));
 
 /***/ }),
-/* 831 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__reducers_filters__ = __webpack_require__(85);
-
-
-
-
-
-var Filter = function Filter(_ref) {
-    var field = _ref.field,
-        onChange = _ref.onChange,
-        value = _ref.value;
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["f" /* Input */], { type: 'text', placeholder: field, onChange: onChange, value: value });
-};
-
-/* unused harmony default export */ var _unused_webpack_default_export = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(__WEBPACK_IMPORTED_MODULE_3__reducers_filters__["c" /* filterMapStateToProps */], __WEBPACK_IMPORTED_MODULE_3__reducers_filters__["b" /* filterMapDispatchToProps */])(Filter));
-
-/***/ }),
+/* 831 */,
 /* 832 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -99088,6 +99065,99 @@ var LoadParticipants = function LoadParticipants(_ref) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 837 */,
+/* 838 */,
+/* 839 */,
+/* 840 */,
+/* 841 */,
+/* 842 */,
+/* 843 */,
+/* 844 */,
+/* 845 */,
+/* 846 */,
+/* 847 */,
+/* 848 */,
+/* 849 */,
+/* 850 */,
+/* 851 */,
+/* 852 */,
+/* 853 */,
+/* 854 */,
+/* 855 */,
+/* 856 */,
+/* 857 */,
+/* 858 */,
+/* 859 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__reducers_filters__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
+
+
+
+
+
+
+var FilterKeyStone = function FilterKeyStone(_ref) {
+    var field = _ref.field,
+        onChange = _ref.onChange,
+        value = _ref.value,
+        dictionnaries = _ref.dictionnaries;
+
+    //If no dictionnaries, exit
+    if (!dictionnaries) return null;
+
+    //
+    var options = __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.chain(dictionnaries.runePaths).map(function (v) {
+        return v.slots[0].runes;
+    }).flatten().map(function (v) {
+        console.log(v);
+        var src = 'images/perk/' + v.id + '.png';
+        return {
+            name: v.name,
+            value: v.id,
+            text: __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'span',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Image */], { size: 'mini', verticalAlign: 'middle', src: src }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    { className: 'filter-item-title' },
+                    v.name
+                )
+            )
+        };
+    })
+    // .sortBy('name')
+    .value();
+
+    options.unshift({
+        name: '',
+        value: '',
+        text: __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["d" /* Icon */], { name: 'cube' })
+    });
+
+    //Custom search
+    var search = function search(list, value) {
+        return __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.filter(list, function (v) {
+            return v.name.match(new RegExp(value, 'i')) !== null;
+        });
+    };
+
+    var placeholder = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["d" /* Icon */], { name: 'cube' });
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["b" /* Dropdown */], { className: 'filter-item', placeholder: placeholder, compact: true, search: search, inline: true, selectOnBlur: false, options: options, onChange: onChange });
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_2_react_redux__["b" /* connect */])(__WEBPACK_IMPORTED_MODULE_3__reducers_filters__["c" /* filterMapStateToProps */], __WEBPACK_IMPORTED_MODULE_3__reducers_filters__["b" /* filterMapDispatchToProps */])(FilterKeyStone));
 
 /***/ })
 /******/ ]);
