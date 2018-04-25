@@ -2084,7 +2084,7 @@ module.exports = getTag;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_74__elements_Segment_SegmentGroup__ = __webpack_require__(370);
 /* unused harmony reexport SegmentGroup */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_75__elements_Step__ = __webpack_require__(797);
-/* unused harmony reexport Step */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_75__elements_Step__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_76__elements_Step_StepContent__ = __webpack_require__(372);
 /* unused harmony reexport StepContent */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_77__elements_Step_StepDescription__ = __webpack_require__(196);
@@ -20749,7 +20749,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 var filters = function filters() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { championId: 56 };
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { championId: 56, 'itemBuildOrder.item0': 3078 };
     var action = arguments[1];
 
     if (action.type == __WEBPACK_IMPORTED_MODULE_0__constants__["b" /* ACT_FILTER_ADD */]) {
@@ -78147,23 +78147,41 @@ var Participant = function Participant(_ref) {
         return null;
     }
 
-    var perkUrl = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/';
-
     var p = participant;
     var champion = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(dictionnaries.champions, { id: p.championId });
-    var version = dictionnaries.version;
     var imgChampion = dictionnaries.urls.champion + champion.key + '.png';
     var imgTier = 'images/tier/' + p.highestAchievedSeasonTier.toLowerCase() + '.png';
     var imgPerk0 = 'images/perk/' + p.perk0 + '.png';
     var imgSum1 = dictionnaries.urls.summonerSpell + dictionnaries.summonerSpells[Math.min(p.spell1Id, p.spell2Id)].key + '.png';
     var imgSum2 = dictionnaries.urls.summonerSpell + dictionnaries.summonerSpells[Math.max(p.spell1Id, p.spell2Id)].key + '.png';
     var items = p.itemBuildOrder ? p.itemBuildOrder : [];
+
+    //Create purchases
+    var purchases = [];
+    var currentPurchase = null;
+    var currentTime = null;
+    __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.forEach(participant.events.ITEM_PURCHASED, function (event) {
+        if (currentPurchase === null || event.timestamp - currentTime > 10000) {
+            //Create a new step
+            currentPurchase = { timestamp: event.timestamp, items: [event.itemId] };
+            purchases.push(currentPurchase);
+        } else {
+            //Add item to current step
+            currentPurchase.items.push(event.itemId);
+        }
+
+        //Update current evaluated time
+        currentTime = currentPurchase.timestamp;
+    });
+
+    console.log(purchases);
+
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */],
         null,
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */].Column,
-            { width: 6 },
+            { width: 8 },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgPerk0, size: 'mini', floated: 'left' }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgTier, size: 'mini', floated: 'left' }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgChampion, size: 'mini', floated: 'left' }),
@@ -78203,6 +78221,27 @@ var Participant = function Participant(_ref) {
             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */].Column,
             { width: 1 },
             p.patchVersion
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */].Column,
+            { width: 16 },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["g" /* Step */].Group,
+                null,
+                purchases.map(function (purchase, key) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["g" /* Step */],
+                        { key: key },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["g" /* Step */].Description,
+                            null,
+                            purchase.items.map(function (itemId, key) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Item__["a" /* default */], { key: key, size: 'mini', itemId: itemId });
+                            })
+                        )
+                    );
+                })
+            )
         )
     );
     // {purchaseEvents.map((event, index) => {
@@ -95458,7 +95497,7 @@ Reveal.Content = __WEBPACK_IMPORTED_MODULE_5__RevealContent__["a" /* default */]
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Step__ = __webpack_require__(371);
-/* unused harmony reexport default */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__Step__["a"]; });
 
 
 
@@ -98966,7 +99005,7 @@ var FilterItem = function FilterItem(_ref) {
 
     var placeholder = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["d" /* Icon */], { name: 'cube' });
 
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["b" /* Dropdown */], { className: 'filter-item', placeholder: placeholder, compact: true, search: search, inline: true, selectOnBlur: false, options: options, onChange: onChange });
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["b" /* Dropdown */], { className: 'filter-item', value: value, placeholder: placeholder, compact: true, search: search, inline: true, selectOnBlur: false, options: options, onChange: onChange });
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_2_react_redux__["b" /* connect */])(__WEBPACK_IMPORTED_MODULE_3__reducers_filters__["c" /* filterMapStateToProps */], __WEBPACK_IMPORTED_MODULE_3__reducers_filters__["b" /* filterMapDispatchToProps */])(FilterItem));

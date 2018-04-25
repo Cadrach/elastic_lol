@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 
-import { Grid, Image } from 'semantic-ui-react'
+import { Grid, Image, Step } from 'semantic-ui-react'
 import Item from './Item'
 
 // import { withStyles } from 'material-ui/styles';
@@ -18,19 +18,38 @@ const Participant = ({dictionnaries, participant}) => {
     //Must wait for dictionnaries
     if( ! dictionnaries.version){return null}
 
-    var perkUrl = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/';
-
     var p = participant;
     var champion = _.find(dictionnaries.champions, {id: p.championId});
-    var version = dictionnaries.version;
     var imgChampion = dictionnaries.urls.champion+champion.key+'.png';
     var imgTier = 'images/tier/'+p.highestAchievedSeasonTier.toLowerCase()+'.png';
     var imgPerk0 = 'images/perk/' + p.perk0 + '.png';
     var imgSum1 = dictionnaries.urls.summonerSpell + dictionnaries.summonerSpells[Math.min(p.spell1Id, p.spell2Id)].key + '.png';
     var imgSum2 = dictionnaries.urls.summonerSpell + dictionnaries.summonerSpells[Math.max(p.spell1Id, p.spell2Id)].key + '.png';
     var items = p.itemBuildOrder ? p.itemBuildOrder:[];
+
+    //Create purchases
+    var purchases = [];
+    var currentPurchase = null;
+    var currentTime = null;
+    _.forEach(participant.events.ITEM_PURCHASED, function(event){
+        if(currentPurchase === null || (event.timestamp - currentTime)>10000){
+            //Create a new step
+            currentPurchase = {timestamp: event.timestamp, items: [event.itemId]};
+            purchases.push(currentPurchase);
+        }
+        else{
+            //Add item to current step
+            currentPurchase.items.push(event.itemId);
+        }
+
+        //Update current evaluated time
+        currentTime = currentPurchase.timestamp;
+    });
+
+    console.log(purchases);
+
     return <Grid>
-        <Grid.Column width={6}>
+        <Grid.Column width={8}>
             <Image src={imgPerk0} size="mini" floated="left"/>
             <Image src={imgTier} size="mini" floated="left"/>
             <Image src={imgChampion} size="mini" floated="left"/>
@@ -42,6 +61,7 @@ const Participant = ({dictionnaries, participant}) => {
             {Object.keys(items).map(key => (
                 <Item key={key} size="mini" itemId={items[key]}/>
             ))}
+
         </Grid.Column>
         <Grid.Column width={2}>
             <Image src={'http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/score.png'} size="mini" floated="left"/>
@@ -51,6 +71,19 @@ const Participant = ({dictionnaries, participant}) => {
         <Grid.Column width={1}>{p.enemyTeam.damageType}</Grid.Column>
         <Grid.Column width={1}>{p.win ? 'WIN':'LOSE'}</Grid.Column>
         <Grid.Column width={1}>{p.patchVersion}</Grid.Column>
+        <Grid.Column width={16}>
+            <Step.Group>
+                {purchases.map((purchase, key) => (
+                    <Step key={key}>
+                        <Step.Description>
+                            {purchase.items.map((itemId, key) => (
+                                <Item key={key} size="mini" itemId={itemId}/>
+                            ))}
+                        </Step.Description>
+                    </Step>
+                ))}
+            </Step.Group>
+        </Grid.Column>
     </Grid>
     // {purchaseEvents.map((event, index) => {
     //     const showArrow = prevTime != null && (prevTime + 10000)<event['timestamp'];

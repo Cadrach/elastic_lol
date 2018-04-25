@@ -39,7 +39,7 @@ const FilterItem = ({field, onChange, value, dictionnaries}) => {
 
     var placeholder = <Icon name={'cube'}/>
 
-    return <Dropdown className={'filter-item'} placeholder={placeholder} compact search={search} inline selectOnBlur={false}  options={options} onChange={onChange}/>
+    return <Dropdown className={'filter-item'}  value={value} placeholder={placeholder} compact search={search} inline selectOnBlur={false}  options={options} onChange={onChange}/>
 }
 
 export default connect(filterMapStateToProps, filterMapDispatchToProps)(FilterItem);
