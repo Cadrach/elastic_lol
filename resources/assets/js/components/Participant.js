@@ -50,6 +50,7 @@ const Participant = ({dictionnaries, participant}) => {
         <Grid.Column width={1}>{p.identity.summonerName}</Grid.Column>
         <Grid.Column width={1}>{p.enemyTeam.damageType}</Grid.Column>
         <Grid.Column width={1}>{p.win ? 'WIN':'LOSE'}</Grid.Column>
+        <Grid.Column width={1}>{p.patchVersion}</Grid.Column>
     </Grid>
     // {purchaseEvents.map((event, index) => {
     //     const showArrow = prevTime != null && (prevTime + 10000)<event['timestamp'];

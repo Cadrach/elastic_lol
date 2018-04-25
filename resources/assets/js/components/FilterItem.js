@@ -11,7 +11,7 @@ const FilterItem = ({field, onChange, value, dictionnaries}) => {
 
     //
     var options = _.chain(dictionnaries.items).map(function(v){
-        if(v.from && !v.into && v.gold.purchasable){
+        if(v.depth>=3 && v.gold.purchasable){
             return {
                 name: v.name,
                 value: v.id,

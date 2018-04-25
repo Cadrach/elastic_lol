@@ -78198,6 +78198,11 @@ var Participant = function Participant(_ref) {
             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */].Column,
             { width: 1 },
             p.win ? 'WIN' : 'LOSE'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */].Column,
+            { width: 1 },
+            p.patchVersion
         )
     );
     // {purchaseEvents.map((event, index) => {
@@ -98928,7 +98933,7 @@ var FilterItem = function FilterItem(_ref) {
 
     //
     var options = __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.chain(dictionnaries.items).map(function (v) {
-        if (v.from && !v.into && v.gold.purchasable) {
+        if (v.depth >= 3 && v.gold.purchasable) {
             return {
                 name: v.name,
                 value: v.id,

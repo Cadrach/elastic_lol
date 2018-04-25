@@ -114,7 +114,7 @@ class CrawlerLaunch extends Command
         //Setup list of completed items
         $this->completeItems = collect(json_decode(file_get_contents(public_path('json/items.json')), true)['data'])
             ->filter(function($item){
-                return !isset($item['into']) && isset($item['from']) && (!isset($item['tags']) || !in_array('Consumable', $item['tags']));
+                return isset($item['depth']) && $item['depth']>=3 && (!isset($item['tags']) || !in_array('Consumable', $item['tags']));
             })
             ->pluck('id')
         ;
@@ -588,7 +588,7 @@ class CrawlerLaunch extends Command
             //Damage dealt
             $part['percentMagicDamageDealtToChampions'] = $part['totalDamageDealtToChampions'] ? $this->percent($part['magicDamageDealtToChampions'] / $part['totalDamageDealtToChampions']):0;
             $part['percentPhysicalDamageDealtToChampions'] = $part['totalDamageDealtToChampions'] ? $this->percent($part['physicalDamageDealtToChampions'] / $part['totalDamageDealtToChampions']):0;
-            $part['percentTrueDamageDealtToChampions'] = $part['totalDamageDealtToChampions'] ? $this->percent($part['trueDamageDealtToChampions'] / $part['totalDamageDealtToChampions']):0;
+            $part['percentTrueDamageDealtToChampions'] = $part['totalDamageDealtToChampions'] && isset($part['trueDamageDealtToChampions']) ? $this->percent($part['trueDamageDealtToChampions'] / $part['totalDamageDealtToChampions']):0;
             
             //Damage type
             $part['damageType'] = 'MIXED';
