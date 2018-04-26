@@ -23,17 +23,18 @@ const mapStateToProps = state => {
 }
 
 // class Item extends Component {
-const Item = ({dictionnaries, itemId, classes}) => {
+const Item = ({dictionnaries, itemId, size, classes}) => {
 
     var item = _.find(dictionnaries.items, {id: itemId});
     var version = dictionnaries.version;
     var img = dictionnaries.urls.item+itemId+'.png';
+    var s = size ? size:'mini';
 
     if(itemId){
-        return <Image src={img} size="mini" floated="left"/>
+        return <Image src={img} size={s} style={{float:'left'}}/>
     }
     else{
-        return <Image size="mini" floated="left"/>
+        return <Image size={s} style={{float:'left'}}/>
     }
 }
 

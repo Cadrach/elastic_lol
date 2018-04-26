@@ -67,7 +67,10 @@ const Participant = ({dictionnaries, participant}) => {
             <Image src={'http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/score.png'} size="mini" floated="left"/>
             {p.kills}/{p.deaths}/{p.assists}
         </Grid.Column>
-        <Grid.Column width={1}>{p.identity.summonerName}</Grid.Column>
+        <Grid.Column width={1}>
+            {p.identity.summonerName}<br/>
+            {p.timeline.lane} / {p.timeline.role}
+        </Grid.Column>
         <Grid.Column width={1}>{p.enemyTeam.damageType}</Grid.Column>
         <Grid.Column width={1}>{p.win ? 'WIN':'LOSE'}</Grid.Column>
         <Grid.Column width={1}>{p.patchVersion}</Grid.Column>
@@ -77,7 +80,7 @@ const Participant = ({dictionnaries, participant}) => {
                     <Step key={key}>
                         <Step.Description>
                             {purchase.items.map((itemId, key) => (
-                                <Item key={key} size="mini" itemId={itemId}/>
+                                <Item key={key} size="pico" itemId={itemId}/>
                             ))}
                         </Step.Description>
                     </Step>

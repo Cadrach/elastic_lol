@@ -29,4 +29,18 @@
   }
 }
 
+.ui.pico.image{
+  width: 22px;
+  height: auto;
+  margin: 1px;
+}
+
 .ui.search.selection img{display: none !important}
+
+.ui.steps .step{
+  padding-left: 15px !important;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  padding-right: 11px;
+  height: 28px;
+}

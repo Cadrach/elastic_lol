@@ -78205,7 +78205,11 @@ var Participant = function Participant(_ref) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */].Column,
             { width: 1 },
-            p.identity.summonerName
+            p.identity.summonerName,
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+            p.timeline.lane,
+            ' / ',
+            p.timeline.role
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */].Column,
@@ -78236,7 +78240,7 @@ var Participant = function Participant(_ref) {
                             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["g" /* Step */].Description,
                             null,
                             purchase.items.map(function (itemId, key) {
-                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Item__["a" /* default */], { key: key, size: 'mini', itemId: itemId });
+                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Item__["a" /* default */], { key: key, size: 'pico', itemId: itemId });
                             })
                         )
                     );
@@ -98926,17 +98930,19 @@ var mapStateToProps = function mapStateToProps(state) {
 var Item = function Item(_ref) {
     var dictionnaries = _ref.dictionnaries,
         itemId = _ref.itemId,
+        size = _ref.size,
         classes = _ref.classes;
 
 
     var item = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(dictionnaries.items, { id: itemId });
     var version = dictionnaries.version;
     var img = dictionnaries.urls.item + itemId + '.png';
+    var s = size ? size : 'mini';
 
     if (itemId) {
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["e" /* Image */], { src: img, size: 'mini', floated: 'left' });
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["e" /* Image */], { src: img, size: s, style: { float: 'left' } });
     } else {
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["e" /* Image */], { size: 'mini', floated: 'left' });
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["e" /* Image */], { size: s, style: { float: 'left' } });
     }
 };
 
