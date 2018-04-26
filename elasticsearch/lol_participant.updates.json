@@ -25,6 +25,11 @@
                   "exists": {
                       "field": "identity.tier"
                   }
+              },
+              "must": {
+                  "exists": {
+                      "field": "highestAchievedSeasonTier"
+                  }
               }
           }
       }
