@@ -5,6 +5,7 @@ import _ from 'lodash'
 
 import { Grid, Image, Step } from 'semantic-ui-react'
 import Item from './Item'
+import Champion from './Champion'
 
 // import { withStyles } from 'material-ui/styles';
 
@@ -19,8 +20,6 @@ const Participant = ({dictionnaries, participant}) => {
     if( ! dictionnaries.version){return null}
 
     var p = participant;
-    var champion = _.find(dictionnaries.champions, {id: p.championId});
-    var imgChampion = dictionnaries.urls.champion+champion.key+'.png';
     var imgTier = 'images/tier/'+p.highestAchievedSeasonTier.toLowerCase()+'.png';
     var imgPerk0 = 'images/perk/' + p.perk0 + '.png';
     var imgSum1 = dictionnaries.urls.summonerSpell + dictionnaries.summonerSpells[Math.min(p.spell1Id, p.spell2Id)].key + '.png';
@@ -52,7 +51,7 @@ const Participant = ({dictionnaries, participant}) => {
         <Grid.Column width={8}>
             <Image src={imgPerk0} size="mini" floated="left"/>
             <Image src={imgTier} size="mini" floated="left"/>
-            <Image src={imgChampion} size="mini" floated="left"/>
+            <Champion champId={p.championId} size="mini"/>
             <Image src={imgSum1} size="mini" floated="left"/>
             <Image src={imgSum2} size="mini" floated="left"/>
 
@@ -71,7 +70,13 @@ const Participant = ({dictionnaries, participant}) => {
             {p.identity.summonerName}<br/>
             {p.timeline.lane} / {p.timeline.role}
         </Grid.Column>
-        <Grid.Column width={1}>{p.enemyTeam.damageType}</Grid.Column>
+        <Grid.Column width={1}>
+            Vs {p.enemyTeam.damageType}<br/>
+
+            {p.playVersus.map((champId, key) => (
+                <Champion key={key} champId={champId} size="pico"/>
+            ))}
+        </Grid.Column>
         <Grid.Column width={1}>{p.win ? 'WIN':'LOSE'}</Grid.Column>
         <Grid.Column width={1}>{p.patchVersion}</Grid.Column>
         <Grid.Column width={16}>

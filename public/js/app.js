@@ -78123,6 +78123,8 @@ var Participants = function Participants(_ref) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Item__ = __webpack_require__(830);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Champion__ = __webpack_require__(861);
+
 
 
 
@@ -78148,8 +78150,6 @@ var Participant = function Participant(_ref) {
     }
 
     var p = participant;
-    var champion = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(dictionnaries.champions, { id: p.championId });
-    var imgChampion = dictionnaries.urls.champion + champion.key + '.png';
     var imgTier = 'images/tier/' + p.highestAchievedSeasonTier.toLowerCase() + '.png';
     var imgPerk0 = 'images/perk/' + p.perk0 + '.png';
     var imgSum1 = dictionnaries.urls.summonerSpell + dictionnaries.summonerSpells[Math.min(p.spell1Id, p.spell2Id)].key + '.png';
@@ -78184,7 +78184,7 @@ var Participant = function Participant(_ref) {
             { width: 8 },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgPerk0, size: 'mini', floated: 'left' }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgTier, size: 'mini', floated: 'left' }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgChampion, size: 'mini', floated: 'left' }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Champion__["a" /* default */], { champId: p.championId, size: 'mini' }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgSum1, size: 'mini', floated: 'left' }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["e" /* Image */], { src: imgSum2, size: 'mini', floated: 'left' }),
             '\xA0',
@@ -78214,7 +78214,12 @@ var Participant = function Participant(_ref) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */].Column,
             { width: 1 },
-            p.enemyTeam.damageType
+            'Vs ',
+            p.enemyTeam.damageType,
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+            p.playVersus.map(function (champId, key) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Champion__["a" /* default */], { key: key, champId: champId, size: 'pico' });
+            })
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_3_semantic_ui_react__["c" /* Grid */].Column,
@@ -98909,17 +98914,6 @@ Feed.User = __WEBPACK_IMPORTED_MODULE_16__FeedUser__["a" /* default */];
 
 
 
-var styles = {
-    avatar: {
-        width: '32px',
-        height: '32px',
-        margin: '5px'
-    },
-    emptyAvatar: {
-        backgroundColor: '#000'
-    }
-};
-
 var mapStateToProps = function mapStateToProps(state) {
     return {
         dictionnaries: state.dictionnaries
@@ -99279,6 +99273,53 @@ var FilterTier = function FilterTier(_ref) {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_2_react_redux__["b" /* connect */])(__WEBPACK_IMPORTED_MODULE_3__reducers_filters__["c" /* filterMapStateToProps */], __WEBPACK_IMPORTED_MODULE_3__reducers_filters__["b" /* filterMapDispatchToProps */])(FilterTier));
+
+/***/ }),
+/* 861 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_classnames__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__ = __webpack_require__(43);
+
+
+
+
+
+
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        dictionnaries: state.dictionnaries
+    };
+};
+
+// class Item extends Component {
+var Champion = function Champion(_ref) {
+    var dictionnaries = _ref.dictionnaries,
+        champId = _ref.champId,
+        size = _ref.size,
+        classes = _ref.classes;
+
+
+    var champion = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a.find(dictionnaries.champions, { id: champId });
+    var img = dictionnaries.urls.champion + champion.key + '.png';
+    var s = size ? size : 'mini';
+
+    if (champId) {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["e" /* Image */], { src: img, size: s, style: { float: 'left' } });
+    } else {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_semantic_ui_react__["e" /* Image */], { size: s, style: { float: 'left' } });
+    }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps)(Champion));
 
 /***/ })
 /******/ ]);

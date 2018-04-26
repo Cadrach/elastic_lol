@@ -12,14 +12,13 @@ const mapStateToProps = state => {
 }
 
 // class Item extends Component {
-const Item = ({dictionnaries, itemId, size, classes}) => {
+const Champion = ({dictionnaries, champId, size, classes}) => {
 
-    var item = _.find(dictionnaries.items, {id: itemId});
-    var version = dictionnaries.version;
-    var img = dictionnaries.urls.item+itemId+'.png';
+    var champion = _.find(dictionnaries.champions, {id: champId});
+    var img = dictionnaries.urls.champion+champion.key+'.png';
     var s = size ? size:'mini';
 
-    if(itemId){
+    if(champId){
         return <Image src={img} size={s} style={{float:'left'}}/>
     }
     else{
@@ -27,4 +26,4 @@ const Item = ({dictionnaries, itemId, size, classes}) => {
     }
 }
 
-export default connect(mapStateToProps)(Item);
+export default connect(mapStateToProps)(Champion);
