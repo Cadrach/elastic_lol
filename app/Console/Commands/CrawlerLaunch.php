@@ -431,6 +431,7 @@ class CrawlerLaunch extends Command
      * @throws \Exception
      */
     public function aggregateParticipantsData($match, $timeline){
+        $tiers = ['UNRANKED', 'BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND', 'MASTER', 'CHALLENGER'];
 
         //Prepare timeline per participant
         $events = [];
@@ -545,6 +546,7 @@ class CrawlerLaunch extends Command
 
             //Identity
             $part['identity'] = $identities[$pId];
+            $part['identity']['tier'] = array_search($part['highestAchievedSeasonTier'], $tiers);
 
             //Versus & With
             $part['playVersus'] = collect($match['participants'])->filter(function($p) use ($teamId){return $teamId != $p['teamId'];})->pluck('championId');
@@ -565,6 +567,8 @@ class CrawlerLaunch extends Command
                         }
                         return $mem;
                     }, []);
+
+                    $part['itemCompleted'] = array_values($part['itemBuildOrder']);
                 }
 
                 //Skill order
@@ -594,7 +598,10 @@ class CrawlerLaunch extends Command
             $part['damageType'] = 'MIXED';
             if($part['percentMagicDamageDealtToChampions']>60){$part['damageType'] = 'AP';}
             if($part['percentPhysicalDamageDealtToChampions']>60){$part['damageType'] = 'AD';}
-            
+
+            //Summoner spells
+            $part['spells'] = [min($part['spell1Id'],$part['spell2Id']), max($part['spell1Id'],$part['spell2Id'])];
+
             //
             $participants[] = $part;
         }

@@ -1,0 +1,33 @@
+[
+  //Create "spells" property for concatenate summoner spells
+  //POST lol_participant/_update_by_query
+  {
+    "script": "ctx._source.spells=[Math.min(ctx._source.spell1Id,ctx._source.spell2Id), Math.max(ctx._source.spell1Id,ctx._source.spell2Id)]",
+    "query": {
+      "bool": {
+        "must_not": {
+          "exists": {
+            "field": "spells"
+          }
+        }
+      }
+    }
+  },
+
+  //Create "tier" property for ordering tiers
+  //POST lol_participant/_update_by_query?scroll_size=10000&wait_for_completion=false&timeout=216000s
+  //GET _tasks?detailed=true&actions=*byquery
+  {
+      "script": "ctx._source.identity.tier=['UNRANKED', 'BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND', 'MASTER', 'CHALLENGER'].indexOf(ctx._source.highestAchievedSeasonTier)",
+      "query": {
+          "bool": {
+              "must_not": {
+                  "exists": {
+                      "field": "identity.tier"
+                  }
+              }
+          }
+      }
+  }
+
+]
